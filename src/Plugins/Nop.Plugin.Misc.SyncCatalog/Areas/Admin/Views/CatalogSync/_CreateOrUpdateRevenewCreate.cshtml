@@ -1,0 +1,144 @@
+@model CatalogModel
+
+<div asp-validation-summary="All"></div>
+
+@if (ViewBag.RefreshPage == true)
+{
+    <script>
+        try { window.opener.document.forms['@(Context.Request.Query["formId"])'].@(Context.Request.Query["btnId"]).click(); }
+        catch (e) { }
+        window.close();
+    </script>
+}
+
+<script>
+
+    $(document).ready(function () {
+        $("#@Html.IdFor(model => model.SelectedRevenew)").change(toggleAttributeControlType);
+        toggleAttributeControlType();
+    });
+
+    function toggleAttributeControlType() {
+        var selectedAttributeControlTypeId = $("#@Html.IdFor(model => model.SelectedRevenew)").val();
+
+        //values
+        if (selectedAttributeControlTypeId == 1) {
+            $('#pnlCategories').show();
+        }
+        else {
+            $('#pnlCategories').hide();
+        }
+
+        //values
+        if (selectedAttributeControlTypeId == 3) {
+            $('#pnlBrands').show();
+        }
+        else {
+            $('#pnlBrands').hide();
+        }
+    }
+</script>
+<section class="content">
+    <div class="container-fluid">
+        <div class="form-horizontal">
+            <div class="form-horizontal">
+                <div class="cards-group">
+                    @await Component.InvokeAsync("AdminWidget", new { widgetZone = AdminWidgetZones.ProductTierPriceDetailsTop, additionalData = Model })
+                    <div class="card card-default card-popup">
+                        <div class="card-body">
+
+                            <div class="form-group row">
+                                <div class="col-md-3">
+                                    <nop-label asp-for="SelectedRevenew" />
+                                </div>
+                                <div class="col-md-9">
+                                    <nop-select asp-for="SelectedRevenew" asp-items="Model.AvailableRevenews" />
+                                    <span asp-validation-for="SelectedRevenew"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-md-3">
+                                    <nop-label asp-for="Priority" />
+                                </div>
+                                <div class="col-md-9">
+                                    <nop-editor asp-for="Priority" />
+                                    <span asp-validation-for="Priority"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-md-3">
+                                    <nop-label asp-for="Makeup" />
+                                </div>
+                                <div class="col-md-9">
+                                    <nop-editor asp-for="Makeup" />
+                                    <span asp-validation-for="Makeup"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group row" id="pnlCategories">
+                                <div class="col-md-3">
+                                    <nop-label asp-for="SelectedCategoriesIds" />
+                                </div>
+                                <div class="col-md-9">
+                                    <nop-select asp-for="SelectedCategoriesIds" asp-items="Model.AvailableCategory" asp-multiple="true" />
+                                    <script>
+                                        $(document).ready(function () {
+                                            var categoryIdsInput = $('#@Html.IdFor(model => model.SelectedCategoriesIds)').data("kendoMultiSelect");
+                                            categoryIdsInput.setOptions({
+                                                autoClose: false,
+                                                filter: "contains"
+                                            });
+
+                                        @if (Model.AvailableCategory.Count == 0)
+                                        {
+                                            <text>
+                                                    categoryIdsInput.setOptions({
+                                                        enable: false,
+                                                        placeholder: '@T("Admin.Catalog.Products.Fields.Categories.NoCategoriesAvailable")'
+                                                    });
+                                                categoryIdsInput._placeholder();
+                                                categoryIdsInput._enable();
+                                            </text>
+                                        }});
+                                    </script>
+                                </div>
+                            </div>
+
+                            <div class="form-group row" id="pnlBrands">
+                                <div class="col-md-3">
+                                    <nop-label asp-for="SelectedBrandsIds" />
+                                </div>
+                                <div class="col-md-9">
+                                    <nop-select asp-for="SelectedBrandsIds" asp-items="Model.AvailableBrand" asp-multiple="true" />
+                                    <script>
+                                        $(document).ready(function () {
+                                            var categoryIdsInput = $('#@Html.IdFor(model => model.SelectedBrandsIds)').data("kendoMultiSelect");
+                                            categoryIdsInput.setOptions({
+                                                autoClose: false,
+                                                filter: "contains"
+                                            });
+
+                                        @if (Model.AvailableBrand.Count == 0)
+                                        {
+                                            <text>
+                                                    categoryIdsInput.setOptions({
+                                                        enable: false,
+                                                        placeholder: '@T("Admin.Catalog.Products.Fields.Categories.NoCategoriesAvailable")'
+                                                    });
+                                                categoryIdsInput._placeholder();
+                                                categoryIdsInput._enable();
+                                            </text>
+                                        }});
+                                    </script>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

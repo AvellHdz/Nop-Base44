@@ -1,0 +1,11 @@
+﻿{
+  "Group": "Misc",
+  "FriendlyName": "SyncCatalog",
+  "SystemName": "Misc.SyncCatalog",
+  "Version": "1.0",
+  "SupportedVersions": [ "4.40" ],
+  "Author": "Abel Hernandez",
+  "DisplayOrder": 1,
+  "FileName": "Nop.Plugin.Misc.SyncCatalog.dll",
+  "Description": "This plugin allows to integrate with MiddleWare Tecnofin"
+}

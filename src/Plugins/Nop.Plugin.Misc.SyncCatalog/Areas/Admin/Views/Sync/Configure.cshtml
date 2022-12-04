@@ -1,0 +1,132 @@
+﻿@model ConfigurationModel
+
+@{
+    Layout = "_ConfigurePlugin";
+    Html.AddCssFileParts("~/Plugins/Misc.Sendinblue/Content/styles.css", excludeFromBundle: true);
+}
+
+@await Component.InvokeAsync("StoreScopeConfiguration")
+
+<form asp-controller="Sync" asp-action="Configure" method="post">
+    <nop-cards id="sendinblue-cards">
+        <nop-card asp-name="sendinblue-general" asp-icon="fas fa-info" asp-title="@T("Plugins.Misc.Sendinblue.General")" asp-hide-block-attribute-name="@Default.HideGeneralBlock" asp-hide="@Model.HideGeneralBlock" asp-advanced="false">
+            <div class="card-body">
+                <div class="card card-default">
+                    <div class="card-body">
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <nop-label asp-for="StoreId" />
+                            </div>
+                            <div class="col-md-9">
+                                <nop-editor asp-for="StoreId" />
+                                <span asp-validation-for="StoreId"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <nop-label asp-for="UrlService" />
+                            </div>
+                            <div class="col-md-9">
+                                <nop-editor asp-for="UrlService" />
+                                <span asp-validation-for="UrlService"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <nop-label asp-for="UserName" />
+                            </div>
+                            <div class="col-md-9">
+                                <nop-editor asp-for="UserName" />
+                                <span asp-validation-for="UserName"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <nop-label asp-for="Password" />
+                            </div>
+                            <div class="col-md-9">
+                                <nop-editor asp-for="Password" />
+                                <span asp-validation-for="Password"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <nop-label asp-for="QueryAuthenticate" />
+                            </div>
+                            <div class="col-md-9">
+                                <nop-editor asp-for="QueryAuthenticate" />
+                                <span asp-validation-for="QueryAuthenticate"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <nop-label asp-for="QueryRevenewCatalog" />
+                            </div>
+                            <div class="col-md-9">
+                                <nop-editor asp-for="QueryRevenewCatalog" />
+                                <span asp-validation-for="QueryRevenewCatalog"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <nop-label asp-for="QueryBrandCatalog" />
+                            </div>
+                            <div class="col-md-9">
+                                <nop-editor asp-for="QueryBrandCatalog" />
+                                <span asp-validation-for="QueryBrandCatalog"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <nop-label asp-for="QueryRevenewStoreCatalog" />
+                            </div>
+                            <div class="col-md-9">
+                                <nop-editor asp-for="QueryRevenewStoreCatalog" />
+                                <span asp-validation-for="QueryRevenewStoreCatalog"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <nop-label asp-for="QueryCategoryCatalog" />
+                            </div>
+                            <div class="col-md-9">
+                                <nop-editor asp-for="QueryCategoryCatalog" />
+                                <span asp-validation-for="QueryCategoryCatalog"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <nop-label asp-for="QueryRevenewStoreMappingCatalog" />
+                            </div>
+                            <div class="col-md-9">
+                                <nop-editor asp-for="QueryRevenewStoreMappingCatalog" />
+                                <span asp-validation-for="QueryRevenewStoreMappingCatalog"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-9 offset-md-3">
+                                <button type="submit" name="save" class="btn btn-primary">@T("Admin.Common.Save")</button>
+                            </div>
+                            <div class="col-md-9 offset-md-3">
+                                <button asp-action="LoginTest" type="submit" name="save" class="btn btn-success">
+                                    <i class="fas fa-tasks"></i>
+                                    @T(Default.RESOURCE_BOTTON_TEST)
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nop-card>
+    </nop-cards>
+</form>
