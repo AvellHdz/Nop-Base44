@@ -43,6 +43,11 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Models
         /// </summary>
         public string QueryRevenewStoreMappingCatalog { get; set; }
 
+        /// <summary>
+        /// Mutation Revenew Store Mapping Catalog - Sync Services
+        /// </summary>
+        public string MutationCreateRevenewStoreMappingCatalog { get; set; }
+
         #endregion
     }
 }

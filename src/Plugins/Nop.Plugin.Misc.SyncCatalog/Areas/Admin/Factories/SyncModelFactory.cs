@@ -90,6 +90,7 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Factories
             model.QueryBrandCatalog = sendinblueSettings.QueryBrandCatalog;
             model.QueryRevenewStoreCatalog = sendinblueSettings.QueryRevenewStoreCatalog;
             model.QueryRevenewStoreMappingCatalog = sendinblueSettings.QueryRevenewStoreMappingCatalog;
+            model.MutationCreateRevenewStoreMappingCatalog = sendinblueSettings.MutationCreateRevenewStoreMappingCatalog;
 
             return model;
         }

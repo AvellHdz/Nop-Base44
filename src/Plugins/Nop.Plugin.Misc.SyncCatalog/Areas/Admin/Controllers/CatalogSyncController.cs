@@ -135,6 +135,30 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Controllers
                 var storeScope = await _storeContext.GetActiveStoreScopeConfigurationAsync();
                 var syncSetting = await _settingService.LoadSettingAsync<SettingModel>(storeScope);
 
+
+                //prepare available types
+                var store = await _storeContext.GetCurrentStoreAsync();
+                var generics = await _genericAttributeService.GetAttributesForEntityAsync(store.Id, store.GetType().Name);
+
+                var genericsFilter = model.SelectedCategoriesIds.Any()
+                    ? generics.Where(l => model.SelectedCategoriesIds.Contains(l.Id))
+                        .Select(l => l.Key.Replace(Default.GenericCategoryCatalog, string.Empty))
+                    : generics.Where(l => model.SelectedBrandsIds.Contains(l.Id))
+                        .Select(l => l.Key.Replace(Default.GenericBrandCatalog, string.Empty));
+
+                var mappings = genericsFilter.Select(c =>
+                    new RevenewMappingCatalog() { ExternalID = c , MakeUp = model.Makeup });
+
+                var catalog = new RevenewStoreCatalog()
+                {
+                    StoreId = syncSetting.StoreId,
+                    RevenewTypeId = model.SelectedRevenew,
+                    Priroty = model.Priority,
+                    RevenewMappingCatalogs = mappings.ToList()
+                };
+
+                await _syncService.CreateStoreMappingAsync(catalog, syncSetting);
+
                 ViewBag.RefreshPage = true;
 
                 return View(model);

@@ -39,6 +39,11 @@
         /// </summary>
         public string QueryRevenewStoreMappingCatalog { get; set; }
 
+        /// <summary>
+        /// Mutation Revenew Store Mapping Catalog - Sync Services
+        /// </summary>
+        public string MutationCreateRevenewStoreMappingCatalog { get; set; }
+
         public bool HideGeneralBlock { get; set; }
     }
 }

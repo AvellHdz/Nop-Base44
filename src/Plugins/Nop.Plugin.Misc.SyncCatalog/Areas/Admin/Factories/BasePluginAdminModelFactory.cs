@@ -119,7 +119,7 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Factories
                 var value = category.Key.Replace(Default.GenericRevenewCatalog, string.Empty);
 
                 if (!filterValues.Contains(category.Value))
-                    items.Add(new SelectListItem { Value = value, Text = category.Value });
+                    items.Add(new SelectListItem { Value = $"{category.Id}", Text = category.Value });
             }
 
             //insert special item for the default value
@@ -151,7 +151,7 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Factories
                 var value = brand.Key.Replace(Default.GenericRevenewCatalog, string.Empty);
 
                 if (!filterValues.Contains(brand.Value))
-                    items.Add(new SelectListItem { Value = value, Text = brand.Value });
+                    items.Add(new SelectListItem { Value = $"{brand.Id}", Text = brand.Value });
             }
 
             //insert special item for the default value

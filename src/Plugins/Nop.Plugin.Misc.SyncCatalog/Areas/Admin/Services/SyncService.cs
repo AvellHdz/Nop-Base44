@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Nop.Plugin.Misc.SyncCatalog.Areas.Admin.MiddlewareSync;
 using Nop.Plugin.Misc.SyncCatalog.Areas.Admin.MiddlewareSync.Models;
@@ -36,7 +37,6 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Services
             return new();
         }
 
-
         /// <summary>
         /// Revenew Catalog - Sync Catalog
         /// </summary>
@@ -57,7 +57,6 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Services
 
             return new();
         }
-
 
         /// <summary>
         /// Category Catalog - Sync Catalog
@@ -154,6 +153,49 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Services
 
                 return await Query.ExceuteQueryAsync<RevenewStoreMappingSync>(queryRequest, auth: false, bearer: token) ?? new();
             }
+
+            #endregion
+
+            return new();
+        }
+
+        /// <summary>
+        /// Create mapping with API - Sync Catalog
+        /// </summary>
+        /// <param name="login"></param>
+        /// <param name="setting"></param>
+        /// <returns></returns>
+        public async Task<AuthenticateModel> CreateStoreMappingAsync(RevenewStoreCatalog storeCatalog, SettingModel setting)
+        {
+            #region Data Sync
+
+            try
+            {
+                if (!string.IsNullOrEmpty(setting.UrlService)
+                    && !string.IsNullOrEmpty(setting.QueryAuthenticate))
+                {
+                    string detailt = "externalID:" + '"' + "{0}" + '"' + ", makeUp:{1}";
+
+                    var mappings = string.Empty;
+                    foreach (var mapping in storeCatalog.RevenewMappingCatalogs)
+                        mappings = mappings + "{" + string.Format(detailt, mapping.ExternalID, mapping.MakeUp) + "},";
+                   
+                    var mutarionAuthRequest = setting.MutationCreateRevenewStoreMappingCatalog
+                        .Replace(LiteralSync.REVENEW_STORED_CODE_NAME, $"{0}")
+                        .Replace(LiteralSync.STORE_ID_CODE_NAME, $"{storeCatalog.StoreId}")
+                        .Replace(LiteralSync.PRIORITY_CODE_NAME, $"{storeCatalog.Priroty}")
+                        .Replace(LiteralSync.REVENEW_TYPE_CODE_NAME, $"{storeCatalog.RevenewTypeId}")
+                        .Replace(LiteralSync.REVENEW_MAPPING_CATALOG_CODE_NAME, mappings.TrimEnd(','));
+
+
+                    return await MutationLicenseService.ExceuteMutationAsyn<AuthenticateModel>(mutarionAuthRequest) ?? new();
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+
 
             #endregion
 

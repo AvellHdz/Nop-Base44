@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Nop.Web.Framework.Models;
+using Nop.Web.Framework.Mvc.ModelBinding;
 using System.Collections.Generic;
 
 namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Models
@@ -11,6 +12,8 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Models
             AvailableRevenews = new List<SelectListItem>();
             AvailableCategory = new List<SelectListItem>();
             AvailableBrand = new List<SelectListItem>();
+            SelectedCategoriesIds = new List<int>();
+            SelectedBrandsIds = new List<int>();
         }
 
         public string IdRevenew { get; set; }

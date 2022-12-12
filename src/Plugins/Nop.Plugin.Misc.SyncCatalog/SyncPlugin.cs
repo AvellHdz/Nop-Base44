@@ -51,7 +51,20 @@ namespace Nop.Plugin.Misc.SyncCatalog
             //locales
             await _localizationService.AddLocaleResourceAsync(new Dictionary<string, string>
             {
-                [$"{Default.RESOURCE_PREFIX}.TitleInfo"] = "Sync Catalog"
+                [$"{Default.RESOURCE_PREFIX}.TitleInfo"] = "Sync Catalog",
+                [$"{Default.RESOURCE_PREFIX}.Sync.Menu.Title"] = "Configuración",
+                [$"{Default.RESOURCE_PREFIX}.Sync.Setting.SubMenu.Title"] = "Configuración",
+                [$"{Default.RESOURCE_PREFIX}.Admin.Common.Sync.Login.Test"] = "Prueba de login",
+                [$"{Default.RESOURCE_PREFIX}.Admin.Sync.Fields.UrlService.Required"] = "URL requerida",
+                [$"{Default.RESOURCE_PREFIX}.Admin.Sync.Fields.UserName.Required"] = "El usuario es requerido",
+                [$"{Default.RESOURCE_PREFIX}.Admin.Sync.Fields.Password.Required"] = "La contraseña es requerida",
+                [$"{Default.RESOURCE_PREFIX}.Admin.Sync.Catalog"] = "Catálogo",
+                [$"{Default.RESOURCE_PREFIX}.Admin.Sync.Catalog.Revenew"] = "Cifra",
+                [$"{Default.RESOURCE_PREFIX}.Admin.Sync.Catalog.Revenew.Filed.RevenewId"] = "Id",
+                [$"{Default.RESOURCE_PREFIX}.Admin.Sync.Catalog.Revenew.Filed.Name"] = "Nombre",
+                [$"{Default.RESOURCE_PREFIX}.Admin.Sync.Catalog.Revenew.Filed.Priority"] = "Prioridad",
+                [$"{Default.RESOURCE_PREFIX}.Admin.Sync.Catalog.Revenew.Filed.NameType"] = "Tipo",
+                [$"{Default.RESOURCE_PREFIX}.Admin.Sync.Catalog.Revenew.Filed.Makeup"] = "Ganancia"
             });
 
             await base.InstallAsync();

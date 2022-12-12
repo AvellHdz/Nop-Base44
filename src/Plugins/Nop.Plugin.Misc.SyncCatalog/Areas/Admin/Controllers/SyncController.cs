@@ -89,6 +89,7 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Controllers
             syncSetting.QueryBrandCatalog = model.QueryBrandCatalog;
             syncSetting.QueryRevenewStoreCatalog = model.QueryRevenewStoreCatalog;
             syncSetting.QueryRevenewStoreMappingCatalog = model.QueryRevenewStoreMappingCatalog;
+            syncSetting.MutationCreateRevenewStoreMappingCatalog = model.MutationCreateRevenewStoreMappingCatalog;
 
             /* We do not clear cache after each setting update.
              * This behavior can increase performance because cached settings will not be cleared 
@@ -103,6 +104,7 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Controllers
             await _settingService.SaveSettingAsync(syncSetting, settings => settings.QueryBrandCatalog, clearCache: false);
             await _settingService.SaveSettingAsync(syncSetting, settings => settings.QueryRevenewStoreCatalog, clearCache: false);
             await _settingService.SaveSettingAsync(syncSetting, settings => settings.QueryRevenewStoreMappingCatalog, clearCache: false);
+            await _settingService.SaveSettingAsync(syncSetting, settings => settings.MutationCreateRevenewStoreMappingCatalog, clearCache: false);
 
             //now clear settings cache
             await _settingService.ClearCacheAsync();
