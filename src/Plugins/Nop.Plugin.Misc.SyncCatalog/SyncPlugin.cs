@@ -3,9 +3,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Routing;
 using Nop.Core;
+using Nop.Core.Domain.Security;
+using Nop.Data;
 using Nop.Services.Common;
+using Nop.Services.Customers;
 using Nop.Services.Localization;
 using Nop.Services.Plugins;
+using Nop.Services.Security;
 using Nop.Web.Framework;
 using Nop.Web.Framework.Menu;
 
@@ -17,16 +21,26 @@ namespace Nop.Plugin.Misc.SyncCatalog
 
         private readonly IWebHelper _webHelper;
         private readonly ILocalizationService _localizationService;
+        private readonly IPermissionService _permissionService;
+        private readonly ICustomerService _customerService;
+        private readonly IRepository<PermissionRecord> _permissionRecordRepository;
 
         #endregion
 
         #region Ctor
 
-        public SyncPlugin(IWebHelper webHelper, 
-            ILocalizationService localizationService)
+        public SyncPlugin(IWebHelper webHelper,
+            ILocalizationService localizationService,
+            IPermissionService permissionService,            
+            ICustomerService customerService,
+            IRepository<PermissionRecord> permissionRecordRepository)
         {
             _webHelper = webHelper;
             _localizationService = localizationService;
+            _permissionService = permissionService;
+            _customerService = customerService;
+            _permissionRecordRepository = permissionRecordRepository;
+
         }
 
         #endregion
@@ -59,13 +73,42 @@ namespace Nop.Plugin.Misc.SyncCatalog
                 [$"{Default.RESOURCE_PREFIX}.Admin.Sync.Fields.UserName.Required"] = "El usuario es requerido",
                 [$"{Default.RESOURCE_PREFIX}.Admin.Sync.Fields.Password.Required"] = "La contraseña es requerida",
                 [$"{Default.RESOURCE_PREFIX}.Admin.Sync.Catalog"] = "Catálogo",
-                [$"{Default.RESOURCE_PREFIX}.Admin.Sync.Catalog.Revenew"] = "Cifra",
+                [$"{Default.RESOURCE_PREFIX}.Admin.Sync.Catalog.Revenew"] = "Detalle catálogo de ganancias",
                 [$"{Default.RESOURCE_PREFIX}.Admin.Sync.Catalog.Revenew.Filed.RevenewId"] = "Id",
                 [$"{Default.RESOURCE_PREFIX}.Admin.Sync.Catalog.Revenew.Filed.Name"] = "Nombre",
                 [$"{Default.RESOURCE_PREFIX}.Admin.Sync.Catalog.Revenew.Filed.Priority"] = "Prioridad",
                 [$"{Default.RESOURCE_PREFIX}.Admin.Sync.Catalog.Revenew.Filed.NameType"] = "Tipo",
-                [$"{Default.RESOURCE_PREFIX}.Admin.Sync.Catalog.Revenew.Filed.Makeup"] = "Ganancia"
+                [$"{Default.RESOURCE_PREFIX}.Admin.Sync.Catalog.Revenew.Filed.Makeup"] = "Ganancia",
+                [$"{Default.RESOURCE_PREFIX}.Sync.Catalog.SubMenu.Title"] = "Catálogo de ganancias",
+                [$"{Default.RESOURCE_PREFIX}.Admin.Sync.Catalog.Revenew.AddNew"] = "Agregar nuevo revenew"
             });
+
+            // Add new permission record
+
+            var catalogManageSystem = new PermissionRecord
+            {
+                Name = Default.PermissionManagerName,
+                SystemName = Default.PermissionManagerSystmeName,
+                Category = Default.PermissionManagerCategoryName
+            };
+
+            var permissionRecord = (await _permissionService.GetAllPermissionRecordsAsync()).Where(x => x.Name == Default.PermissionManagerName);
+
+            if (permissionRecord == null || !permissionRecord.Any())
+                await _permissionRecordRepository.InsertAsync(catalogManageSystem);
+
+            var customerRole = (await _customerService.GetAllCustomerRolesAsync()).Where(cr => cr.Name == "Administrators").FirstOrDefault();
+
+            if (customerRole != null)
+            {
+                var mapping = await _permissionService.GetMappingByPermissionRecordIdAsync(catalogManageSystem.Id);
+                if (mapping != null && mapping.Count == 0)
+                {
+                    var prcrm = new PermissionRecordCustomerRoleMapping { CustomerRoleId = customerRole.Id, PermissionRecordId = catalogManageSystem.Id };
+
+                    await _permissionService.InsertPermissionRecordCustomerRoleMappingAsync(prcrm);
+                }
+            }
 
             await base.InstallAsync();
         }

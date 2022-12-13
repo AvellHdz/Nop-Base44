@@ -63,119 +63,11 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Controllers
 
         #endregion
 
-        #region Methods
+        #region Utilities
 
         /// <returns>A task that represents the asynchronous operation</returns>
-        public virtual async Task<IActionResult> List()
+        public virtual async Task LiveCatalog()
         {
-            if (!await _permissionService.AuthorizeAsync(StandardPermissionProvider.ManageWidgets))
-                return AccessDeniedView();
-
-            var model = await _syncModelFactory.PrepareCatalogSearchModelAsync(new());
-
-            return View(model);
-
-        }
-
-        [HttpPost]
-        /// <returns>A task that represents the asynchronous operation</returns>
-        public virtual async Task<IActionResult> CatalogSyncList(CatalogSearchModel searchModel)
-        {
-            if (!await _permissionService.AuthorizeAsync(StandardPermissionProvider.ManageProducts))
-                return await AccessDeniedDataTablesJson();
-
-            //load settings for a chosen store scope
-            var storeScope = await _storeContext.GetActiveStoreScopeConfigurationAsync();
-            var syncSetting = await _settingService.LoadSettingAsync<SettingModel>(storeScope);
-
-            //prepare model
-            var model = await _syncModelFactory.PrepareCatalogSyncListModelAsync(searchModel, syncSetting);
-
-            return Json(model);
-        }
-
-        /// <returns>A task that represents the asynchronous operation</returns>
-        public virtual async Task<IActionResult> RevenewCreatePopup()
-        {
-            if (!await _permissionService.AuthorizeAsync(StandardPermissionProvider.ManageWidgets))
-                return AccessDeniedView();
-
-            //load settings for a chosen store scope
-            var storeScope = await _storeContext.GetActiveStoreScopeConfigurationAsync();
-            var syncSetting = await _settingService.LoadSettingAsync<SettingModel>(storeScope);
-
-            //get filters services
-
-            var syncs = await _syncModelFactory.PrepareCatalogSyncModelAsync(syncSetting);
-
-            var categories = syncs.Where(l => l.RevenewName == "Categoria")
-                .Select(x => x.NameType)
-                .ToList();
-
-            var bransd = syncs.Where(l => l.RevenewName == "Marca")
-                .Select(x => x.NameType)
-                .ToList();
-
-            var model = await _syncModelFactory.PrepareCatalogModelAsync(filterCategories: categories, filterBrands: bransd);
-
-            return View(model);
-        }
-
-        [HttpPost]
-        [FormValueRequired("save")]
-        /// <returns>A task that represents the asynchronous operation</returns>
-        public virtual async Task<IActionResult> RevenewCreatePopup(CatalogModel model)
-        {
-            if (!await _permissionService.AuthorizeAsync(StandardPermissionProvider.ManageProducts))
-                return AccessDeniedView();
-
-            if (ModelState.IsValid)
-            {
-                //load settings for a chosen store scope
-                var storeScope = await _storeContext.GetActiveStoreScopeConfigurationAsync();
-                var syncSetting = await _settingService.LoadSettingAsync<SettingModel>(storeScope);
-
-
-                //prepare available types
-                var store = await _storeContext.GetCurrentStoreAsync();
-                var generics = await _genericAttributeService.GetAttributesForEntityAsync(store.Id, store.GetType().Name);
-
-                var genericsFilter = model.SelectedCategoriesIds.Any()
-                    ? generics.Where(l => model.SelectedCategoriesIds.Contains(l.Id))
-                        .Select(l => l.Key.Replace(Default.GenericCategoryCatalog, string.Empty))
-                    : generics.Where(l => model.SelectedBrandsIds.Contains(l.Id))
-                        .Select(l => l.Key.Replace(Default.GenericBrandCatalog, string.Empty));
-
-                var mappings = genericsFilter.Select(c =>
-                    new RevenewMappingCatalog() { ExternalID = c , MakeUp = model.Makeup });
-
-                var catalog = new RevenewStoreCatalog()
-                {
-                    StoreId = syncSetting.StoreId,
-                    RevenewTypeId = model.SelectedRevenew,
-                    Priroty = model.Priority,
-                    RevenewMappingCatalogs = mappings.ToList()
-                };
-
-                await _syncService.CreateStoreMappingAsync(catalog, syncSetting);
-
-                ViewBag.RefreshPage = true;
-
-                return View(model);
-            }
-
-            //prepare model
-            model = await _syncModelFactory.PrepareCatalogModelAsync();
-
-            //if we got this far, something failed, redisplay form
-            return View(model);
-        }
-
-        /// <returns>A task that represents the asynchronous operation</returns>
-        public virtual async Task<IActionResult> LiveCatalog()
-        {
-            if (!await _permissionService.AuthorizeAsync(StandardPermissionProvider.ManageWidgets))
-                return AccessDeniedView();
 
             //load settings for a chosen store scope
             var storeScope = await _storeContext.GetActiveStoreScopeConfigurationAsync();
@@ -226,11 +118,128 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Controllers
                 await _genericAttributeService.SaveAttributeAsync(_storeContext.GetCurrentStore(), $"{Default.GenericBrandCatalog}{brand.externalId}", brand.name);
 
             #endregion
-
-            _notificationService.SuccessNotification("Sincronización Exitosa");
-
-            return await List();
         }
+
+        #endregion
+
+        #region Methods
+
+        /// <returns>A task that represents the asynchronous operation</returns>
+        public virtual async Task<IActionResult> List(bool liveRates = false)
+        {
+            var permissionRecord = (await _permissionService.GetAllPermissionRecordsAsync()).Where(x => x.Name == Default.PermissionManagerName);
+            if (!permissionRecord.Any())
+                return AccessDeniedView();
+
+            if (liveRates)
+            {
+                await LiveCatalog();
+                _notificationService.SuccessNotification("Sincronización Exitosa");
+                //return RedirectToAction("Index");
+            }
+            var model = await _syncModelFactory.PrepareCatalogSearchModelAsync(new());
+
+            return View(model);
+
+        }
+
+        [HttpPost]
+        /// <returns>A task that represents the asynchronous operation</returns>
+        public virtual async Task<IActionResult> CatalogSyncList(CatalogSearchModel searchModel)
+        {
+            if (!await _permissionService.AuthorizeAsync(StandardPermissionProvider.ManageProducts))
+                return await AccessDeniedDataTablesJson();
+
+            //load settings for a chosen store scope
+            var storeScope = await _storeContext.GetActiveStoreScopeConfigurationAsync();
+            var syncSetting = await _settingService.LoadSettingAsync<SettingModel>(storeScope);
+
+            //prepare model
+            var model = await _syncModelFactory.PrepareCatalogSyncListModelAsync(searchModel, syncSetting);
+
+            return Json(model);
+        }
+
+        /// <returns>A task that represents the asynchronous operation</returns>
+        public virtual async Task<IActionResult> RevenewCreatePopup()
+        {
+            var permissionRecord = (await _permissionService.GetAllPermissionRecordsAsync()).Where(x => x.Name == Default.PermissionManagerName);
+            if (!permissionRecord.Any())
+                return AccessDeniedView();
+
+            //load settings for a chosen store scope
+            var storeScope = await _storeContext.GetActiveStoreScopeConfigurationAsync();
+            var syncSetting = await _settingService.LoadSettingAsync<SettingModel>(storeScope);
+
+            //get filters services
+
+            var syncs = await _syncModelFactory.PrepareCatalogSyncModelAsync(syncSetting);
+
+            var categories = syncs.Where(l => l.RevenewName == "Categoria")
+                .Select(x => x.NameType)
+                .ToList();
+
+            var bransd = syncs.Where(l => l.RevenewName == "Marca")
+                .Select(x => x.NameType)
+                .ToList();
+
+            var model = await _syncModelFactory.PrepareCatalogModelAsync(filterCategories: categories, filterBrands: bransd);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [FormValueRequired("save")]
+        /// <returns>A task that represents the asynchronous operation</returns>
+        public virtual async Task<IActionResult> RevenewCreatePopup(CatalogModel model)
+        {
+            var permissionRecord = (await _permissionService.GetAllPermissionRecordsAsync()).Where(x => x.Name == Default.PermissionManagerName);
+            if (!permissionRecord.Any())
+                return AccessDeniedView();
+
+            if (ModelState.IsValid)
+            {
+                //load settings for a chosen store scope
+                var storeScope = await _storeContext.GetActiveStoreScopeConfigurationAsync();
+                var syncSetting = await _settingService.LoadSettingAsync<SettingModel>(storeScope);
+
+
+                //prepare available types
+                var store = await _storeContext.GetCurrentStoreAsync();
+                var generics = await _genericAttributeService.GetAttributesForEntityAsync(store.Id, store.GetType().Name);
+
+                var genericsFilter = model.SelectedCategoriesIds.Any()
+                    ? generics.Where(l => model.SelectedCategoriesIds.Contains(l.Id))
+                        .Select(l => l.Key.Replace(Default.GenericCategoryCatalog, string.Empty))
+                    : generics.Where(l => model.SelectedBrandsIds.Contains(l.Id))
+                        .Select(l => l.Key.Replace(Default.GenericBrandCatalog, string.Empty));
+
+                var mappings = genericsFilter.Select(c =>
+                    new RevenewMappingCatalog() { ExternalID = c, MakeUp = model.Makeup });
+
+                var catalog = new RevenewStoreCatalog()
+                {
+                    StoreId = syncSetting.StoreId,
+                    RevenewTypeId = model.SelectedRevenew,
+                    Priroty = model.Priority,
+                    RevenewMappingCatalogs = mappings.ToList()
+                };
+
+                await _syncService.CreateStoreMappingAsync(catalog, syncSetting);
+
+                ViewBag.RefreshPage = true;
+
+                return View(model);
+            }
+
+            //prepare model
+            model = await _syncModelFactory.PrepareCatalogModelAsync();
+
+            //if we got this far, something failed, redisplay form
+            return View(model);
+        }
+
+
 
         #endregion
     }

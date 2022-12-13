@@ -13,7 +13,7 @@
             @T(Default.PluginCatalogTitle)
         </h1>
         <div class="float-right">
-            <a asp-controller="CatalogSync" asp-action="liveCatalog" class="btn btn-success">
+            <a asp-controller="CatalogSync" asp-action="List" asp-route-liveRates="true" class="btn btn-success">
                 <i class="fas fa-tasks"></i>
                 @T(Default.CATALOG_LIVE)
             </a>
@@ -34,7 +34,6 @@
                                 {
                                 Name = "revenew-grid",
                                 UrlRead = new DataUrl("CatalogSyncList", "CatalogSync", new RouteValueDictionary { [nameof(Model)] = Model }),
-                                //UrlDelete = new DataUrl("TierPriceDelete", "Product", null),
                                 Length = Model.PageSize,
                                 LengthMenu = Model.AvailablePageSizes,
                                 ColumnCollection = new List<ColumnProperty>
@@ -64,7 +63,7 @@
                                 Title = T("Admin.Common.Edit").Text,
                                 Width = "100",
                                 ClassName =  NopColumnClassDefaults.Button,
-                                Render = new RenderCustom("renderPriceColumnEdit")
+                                Render = new RenderCustom("renderRevenewColumnEdit")
                                 },
                                 new ColumnProperty(nameof(CatalogModel.IdRevenew))
                                 {
@@ -77,14 +76,14 @@
                                 })
 
                                 <script>
-                                    function renderPriceColumnEdit(data, type, row, meta) {
-                                        return '<button onclick=\"javascript:OpenWindow(\'@Url.Content("~/Admin/CatalogSync/TierPriceEditPopup/")' + data + '?btnId=btnRefreshCatalogSync&formId=product-form\', 800, 600, true); return false;\" class="btn btn-default"><i class="fas fa-pencil-alt"></i>@T("Admin.Common.Edit").Text</button>';
+                                    function renderRevenewColumnEdit(data, type, row, meta) {
+                                        return '<button onclick=\"javascript:OpenWindow(\'@Url.Content("~/Admin/CatalogSync/RevenewEditPopup/")' + data + '?btnId=btnRefreshCatalogSync&formId=product-form\', 800, 600, true); return false;\" class="btn btn-default"><i class="fas fa-pencil-alt"></i>@T("Admin.Common.Edit").Text</button>';
                                     }
                                 </script>
                             </div>
                             <div class="card-footer">
                                 <button type="submit" id="btnAddNewCatalogSync" onclick="javascript:OpenWindow('@(Url.Action("RevenewCreatePopup", "CatalogSync", new { btnId = "btnRefreshCatalogSync", formId = "catalog-sync-form"}))', 800, 600, true); return false;" class="btn btn-primary">
-                                    @T("Admin.Catalog.Products.TierPrices.AddNew")
+                                    @T($"{Default.RESOURCE_PREFIX}.Admin.Sync.Catalog.Revenew.AddNew")
                                 </button>
                                 <button type="submit" id="btnRefreshCatalogSync" style="display: none"></button>
                                 <script>

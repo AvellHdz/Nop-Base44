@@ -17,6 +17,25 @@
 
         #endregion
 
+        #region Permission Record
+
+        /// <summary>
+        /// Manager Name
+        /// </summary>
+        public static string PermissionManagerName = "Admin area. Manage Catalog Sync Access";
+
+        /// <summary>
+        /// Manager Name
+        /// </summary>
+        public static string PermissionManagerSystmeName = "CatalogSync";
+
+        /// <summary>
+        /// Manager Name
+        /// </summary>
+        public static string PermissionManagerCategoryName = "SettingSync";
+
+        #endregion
+
         #region Menu site
 
         /// <summary>

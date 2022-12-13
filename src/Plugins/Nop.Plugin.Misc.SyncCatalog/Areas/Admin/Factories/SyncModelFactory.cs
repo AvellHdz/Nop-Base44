@@ -205,35 +205,6 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Factories
 
                 return catalogModels.ToAsyncEnumerable();
 
-                //return revenewGruop.SelectAwait(async revenew =>
-                //{
-
-                //    #region Revenew Store
-
-                //    //prepare available types
-                //    var store = await _storeContext.GetCurrentStoreAsync();
-
-                //    var generics = await _genericAttributeService.GetAttributesForEntityAsync(store.Id, store.GetType().Name);
-
-                //    var availableTypes = generics.Where(l => l.Key.Contains(Default.GenericRevenewCatalog));
-
-                //    var idRevenew = availableTypes.FirstOrDefault(x => x.Key.Replace(Default.GenericRevenewCatalog, string.Empty) == $"{revenew.id}")
-                //        .Key.Replace(Default.GenericRevenewCatalog, string.Empty);
-
-                //    var name = availableTypes.FirstOrDefault(x => x.Key.Replace(Default.GenericRevenewCatalog, string.Empty) == $"{revenew.id}").Value;
-
-                //    #endregion
-
-                //    //fill in additional values (not existing in the entity)   
-                //    var catalogModel = new CatalogModel()
-                //    {
-                //        IdRevenew = idRevenew ?? string.Empty,
-                //        RevenewName = name ?? string.Empty,
-                //        Priority = revenew.priority
-                //    };
-
-                //    return catalogModel;
-                //});
             });
 
             return model;
