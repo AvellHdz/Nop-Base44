@@ -10,5 +10,6 @@
         public int revenewStoreId { get; set; }
         public int externalId { get; set; }
         public float makeup { get; set; }
+        public int id { get;set; }
     }
 }

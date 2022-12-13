@@ -17,6 +17,7 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Models
         }
 
         public string IdRevenew { get; set; }
+        public int IdMapping { get; set; }
         public string RevenewName { get; set; }
         public int Priority { get; set; }
         public int SelectedRevenew { get; set; }

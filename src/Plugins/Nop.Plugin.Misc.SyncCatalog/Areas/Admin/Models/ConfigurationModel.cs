@@ -44,6 +44,16 @@
         /// </summary>
         public string MutationCreateRevenewStoreMappingCatalog { get; set; }
 
+        /// <summary>
+        /// Query Product Store Mapping Catalog - Sync Services
+        /// </summary>
+        public string QueryProductStoreMappingCatalog { get; set; }
+
+        /// <summary>
+        /// Mutation Product Store Mapping Catalog - Sync Services
+        /// </summary>
+        public string MutationCreateProductStoreMappingCatalog { get; set; }
+
         public bool HideGeneralBlock { get; set; }
     }
 }

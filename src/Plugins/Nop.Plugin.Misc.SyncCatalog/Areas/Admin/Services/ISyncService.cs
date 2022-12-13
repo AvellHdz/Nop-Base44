@@ -64,5 +64,12 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Services
         /// <returns></returns>
         Task<AuthenticateModel> CreateStoreMappingAsync(RevenewStoreCatalog storeCatalog, SettingModel setting);
 
+        /// <summary>
+        /// Product Catalog - Sync Catalog
+        /// </summary>
+        /// <param name="login"></param>
+        /// <param name="setting"></param>
+        /// <returns></returns>
+        Task<ProductSyncStore> GetProductsStoreCatalog(string token, SettingModel setting);
     }
 }

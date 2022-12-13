@@ -201,6 +201,32 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Services
 
             return new();
         }
+
+        /// <summary>
+        /// Product Catalog - Sync Catalog
+        /// </summary>
+        /// <param name="login"></param>
+        /// <param name="setting"></param>
+        /// <returns></returns>
+        public async Task<ProductSyncStore> GetProductsStoreCatalog(string token, SettingModel setting)
+        {
+            #region Data Sync
+
+            if (!string.IsNullOrEmpty(setting.UrlService)
+                && !string.IsNullOrEmpty(setting.QueryAuthenticate)
+                && setting.StoreId > 0)
+            {
+
+                var queryRequest = setting.QueryProductStoreMappingCatalog
+                    .Replace(LiteralSync.STORE_ID_CODE, $"{setting.StoreId}");
+
+                return await Query.ExceuteQueryAsync<ProductSyncStore>(queryRequest, auth: false, bearer: token) ?? new();
+            }
+
+            #endregion
+
+            return new();
+        }
         #endregion
     }
 }

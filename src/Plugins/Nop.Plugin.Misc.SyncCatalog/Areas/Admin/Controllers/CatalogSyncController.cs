@@ -122,7 +122,7 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Controllers
 
         #endregion
 
-        #region Methods
+        #region Methods - Revenew
 
         /// <returns>A task that represents the asynchronous operation</returns>
         public virtual async Task<IActionResult> List(bool liveRates = false)
@@ -239,7 +239,40 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Controllers
             return View(model);
         }
 
+        #endregion
 
+        #region Products
+
+
+        /// <returns>A task that represents the asynchronous operation</returns>
+        public virtual async Task<IActionResult> ListProducts()
+        {
+            var permissionRecord = (await _permissionService.GetAllPermissionRecordsAsync()).Where(x => x.Name == Default.PermissionManagerName);
+            if (!permissionRecord.Any())
+                return AccessDeniedView();
+
+            var model = await _syncModelFactory.PrepareCatalogSearchModelAsync(new());
+
+            return View(model);
+
+        }
+
+        [HttpPost]
+        /// <returns>A task that represents the asynchronous operation</returns>
+        public virtual async Task<IActionResult> CatalogProductSyncList(CatalogSearchModel searchModel)
+        {
+            if (!await _permissionService.AuthorizeAsync(StandardPermissionProvider.ManageProducts))
+                return await AccessDeniedDataTablesJson();
+
+            //load settings for a chosen store scope
+            var storeScope = await _storeContext.GetActiveStoreScopeConfigurationAsync();
+            var syncSetting = await _settingService.LoadSettingAsync<SettingModel>(storeScope);
+
+            //prepare model
+            var model = await _syncModelFactory.PrepareCatalogSyncListModelAsync(searchModel, syncSetting);
+
+            return Json(model);
+        }
 
         #endregion
     }

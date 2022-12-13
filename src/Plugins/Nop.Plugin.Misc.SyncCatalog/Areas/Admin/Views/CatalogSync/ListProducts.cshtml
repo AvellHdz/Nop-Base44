@@ -1,4 +1,4 @@
-﻿@model CatalogSearchModel
+﻿@model CatalogProductSearchModel
 
 @{
     //page title
@@ -32,40 +32,32 @@
                                 </p>
                                 @await Html.PartialAsync("Table", new DataTablesModel
                                 {
-                                Name = "revenew-grid",
-                                UrlRead = new DataUrl("CatalogSyncList", "CatalogSync", new RouteValueDictionary { [nameof(Model)] = Model }),
+                                Name = "product-grid",
+                                UrlRead = new DataUrl("CatalogProductSyncList", "CatalogSync", new RouteValueDictionary { [nameof(Model)] = Model }),
                                 Length = Model.PageSize,
                                 LengthMenu = Model.AvailablePageSizes,
                                 ColumnCollection = new List<ColumnProperty>
                                 {
-                                new ColumnProperty(nameof(CatalogModel.IdRevenew))
+                                new ColumnProperty(nameof(CatalogProductModel.IdMapping))
                                 {
-                                Title = T(Default.REVENEW_IDENTIFIER).Text
+                                Title = T(Default.IDENTIFIER_PRODUCT_MAPPING).Text
                                 },
-                                new ColumnProperty(nameof(CatalogModel.RevenewName))
+                                new ColumnProperty(nameof(CatalogProductModel.Name))
                                 {
-                                Title = T(Default.REVENEW_NAME).Text
+                                Title = T(Default.NAME_PRODUCT_MAPPING).Text
                                 },
-                                new ColumnProperty(nameof(CatalogModel.NameType))
+                                new ColumnProperty(nameof(CatalogProductModel.GTIN))
                                 {
-                                Title = T(Default.NAME_PROPERTY_TYPE).Text
-                                },
-                                new ColumnProperty(nameof(CatalogModel.Makeup))
-                                {
-                                Title = T(Default.MAKEUP_NAME).Text
-                                },
-                                new ColumnProperty(nameof(CatalogModel.Priority))
-                                {
-                                Title = T(Default.REVENEW_PRIORITY).Text
-                                },
-                                new ColumnProperty(nameof(CatalogModel.IdMapping))
+                                Title = T(Default.EXTERNAL_PRODUCT_MAPPING).Text
+                                },                             
+                                new ColumnProperty(nameof(CatalogProductModel.IdMapping))
                                 {
                                 Title = T("Admin.Common.Edit").Text,
                                 Width = "100",
                                 ClassName =  NopColumnClassDefaults.Button,
                                 Render = new RenderCustom("renderRevenewColumnEdit")
                                 },
-                                new ColumnProperty(nameof(CatalogModel.IdMapping))
+                                new ColumnProperty(nameof(CatalogProductModel.IdMapping))
                                 {
                                 Title = T("Admin.Common.Delete").Text,
                                 Width = "100",

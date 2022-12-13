@@ -80,7 +80,10 @@ namespace Nop.Plugin.Misc.SyncCatalog
                 [$"{Default.RESOURCE_PREFIX}.Admin.Sync.Catalog.Revenew.Filed.NameType"] = "Tipo",
                 [$"{Default.RESOURCE_PREFIX}.Admin.Sync.Catalog.Revenew.Filed.Makeup"] = "Ganancia",
                 [$"{Default.RESOURCE_PREFIX}.Sync.Catalog.SubMenu.Title"] = "Catálogo de ganancias",
-                [$"{Default.RESOURCE_PREFIX}.Admin.Sync.Catalog.Revenew.AddNew"] = "Agregar nuevo revenew"
+                [$"{Default.RESOURCE_PREFIX}.Admin.Sync.Catalog.Revenew.AddNew"] = "Agregar nuevo revenew",
+                [Default.IDENTIFIER_PRODUCT_MAPPING] = "Producto en Ordenes a Sincronizar",
+                [Default.NAME_PRODUCT_MAPPING] = "Producto",
+                [Default.EXTERNAL_PRODUCT_MAPPING] = "Product Code"
             });
 
             // Add new permission record

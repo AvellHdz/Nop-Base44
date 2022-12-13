@@ -134,6 +134,22 @@
         /// </summary>
         public const string MAKEUP_NAME = "Plugin.Misc.SyncCatalog.Admin.Sync.Catalog.Revenew.Filed.Makeup";
 
+
+        /// <summary>
+        /// Identifier name column
+        /// </summary>
+        public const string IDENTIFIER_PRODUCT_MAPPING = "Plugin.Misc.SyncCatalog.Admin.Sync.Catalog.Product.Filed.IdMapping";
+        
+        /// <summary>
+        /// Identifier name column
+        /// </summary>
+        public const string NAME_PRODUCT_MAPPING = "Plugin.Misc.SyncCatalog.Admin.Sync.Catalog.Product.Filed.Name";
+        
+        /// <summary>
+        /// Identifier name column
+        /// </summary>
+        public const string EXTERNAL_PRODUCT_MAPPING = "Plugin.Misc.SyncCatalog.Admin.Sync.Catalog.Product.Filed.External";
+
         #endregion
 
         #region Generic Attribute

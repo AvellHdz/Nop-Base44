@@ -9,6 +9,7 @@ using Nop.Core.Domain.Catalog;
 using Nop.Plugin.Misc.SyncCatalog.Areas.Admin.MiddlewareSync.Models;
 using Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Models;
 using Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Services;
+using Nop.Services.Catalog;
 using Nop.Services.Common;
 using Nop.Services.Configuration;
 using Nop.Web.Framework.Models.Extensions;
@@ -24,6 +25,7 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Factories
         private readonly ISyncService _syncService;
         private readonly IGenericAttributeService _genericAttributeService;
         private readonly IBasePluginAdminModelFactory _basePluginAdminModelFactory;
+        private readonly IProductService _productService;
 
         #endregion
 
@@ -33,13 +35,15 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Factories
             ISettingService settingService,
             ISyncService syncService,
             IGenericAttributeService genericAttributeService,
-            IBasePluginAdminModelFactory basePluginAdminModelFactory)
+            IBasePluginAdminModelFactory basePluginAdminModelFactory,
+            IProductService productService)
         {
             _storeContext = storeContext;
             _settingService = settingService;
             _syncService = syncService;
             _genericAttributeService = genericAttributeService;
             _basePluginAdminModelFactory = basePluginAdminModelFactory;
+            _productService = productService;
         }
 
         #endregion
@@ -66,6 +70,24 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Factories
         }
 
         /// <summary>
+        /// Prepare catalog product search model
+        /// </summary>
+        /// <param name="searchModel">Currency search model</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation
+        /// The task result contains the currency search model
+        /// </returns>
+        public virtual async Task<CatalogProductSearchModel> PrepareCatalogProductSearchModelAsync(CatalogProductSearchModel searchModel)
+        {
+            if (searchModel == null)
+                throw new ArgumentNullException(nameof(searchModel));
+
+            //prepare page parameters
+            searchModel.SetGridPageSize();
+
+            return searchModel;
+        }
+        /// <summary>
         /// Prepare ConfigurationModel
         /// </summary>
         /// <param name="model">Model</param>
@@ -77,20 +99,22 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Factories
 
             //load settings for active store scope
             var storeId = await _storeContext.GetActiveStoreScopeConfigurationAsync();
-            var sendinblueSettings = await _settingService.LoadSettingAsync<SettingModel>(storeId);
+            var syncCatlogSettings = await _settingService.LoadSettingAsync<SettingModel>(storeId);
 
             //prepare common properties
-            model.UrlService = sendinblueSettings.UrlService;
-            model.UserName = sendinblueSettings.UserName;
-            model.Password = sendinblueSettings.Password;
-            model.StoreId = sendinblueSettings.StoreId;
-            model.QueryAuthenticate = sendinblueSettings.QueryAuthenticate;
-            model.QueryRevenewCatalog = sendinblueSettings.QueryRevenewCatalog;
-            model.QueryCategoryCatalog = sendinblueSettings.QueryCategoryCatalog;
-            model.QueryBrandCatalog = sendinblueSettings.QueryBrandCatalog;
-            model.QueryRevenewStoreCatalog = sendinblueSettings.QueryRevenewStoreCatalog;
-            model.QueryRevenewStoreMappingCatalog = sendinblueSettings.QueryRevenewStoreMappingCatalog;
-            model.MutationCreateRevenewStoreMappingCatalog = sendinblueSettings.MutationCreateRevenewStoreMappingCatalog;
+            model.UrlService = syncCatlogSettings.UrlService;
+            model.UserName = syncCatlogSettings.UserName;
+            model.Password = syncCatlogSettings.Password;
+            model.StoreId = syncCatlogSettings.StoreId;
+            model.QueryAuthenticate = syncCatlogSettings.QueryAuthenticate;
+            model.QueryRevenewCatalog = syncCatlogSettings.QueryRevenewCatalog;
+            model.QueryCategoryCatalog = syncCatlogSettings.QueryCategoryCatalog;
+            model.QueryBrandCatalog = syncCatlogSettings.QueryBrandCatalog;
+            model.QueryRevenewStoreCatalog = syncCatlogSettings.QueryRevenewStoreCatalog;
+            model.QueryRevenewStoreMappingCatalog = syncCatlogSettings.QueryRevenewStoreMappingCatalog;
+            model.MutationCreateRevenewStoreMappingCatalog = syncCatlogSettings.MutationCreateRevenewStoreMappingCatalog;
+            model.QueryProductStoreMappingCatalog = syncCatlogSettings.QueryProductStoreMappingCatalog;
+            model.MutationCreateProductStoreMappingCatalog = syncCatlogSettings.MutationCreateProductStoreMappingCatalog;
 
             return model;
         }
@@ -195,6 +219,7 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Factories
                         catalogModels.Add(new()
                         {
                             IdRevenew = idRevenew ?? string.Empty,
+                            IdMapping = mapping.id,
                             RevenewName = name ?? string.Empty,
                             Priority = revenew.priority,
                             NameType = nameType,
@@ -289,6 +314,50 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Factories
             return catalogModels;
         }
 
+        /// <summary>
+        /// Prepare paged catalog product list model
+        /// </summary>
+        /// <param name="searchModel">Catalog sync search model</param>
+        /// <param name="setting">Setting model</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation
+        /// The task result contains the catalog sync list model
+        /// </returns>
+        public virtual async Task<CatalogListModel> PrepareCatalogProductSyncListModelAsync(CatalogSearchModel searchModel, SettingModel setting)
+        {
+            if (searchModel == null)
+                throw new ArgumentNullException(nameof(searchModel));
+
+            //get revenews services
+            var products = (await _syncService.GetProductsStoreCatalog(string.Empty, setting))
+                .productStore.ToPagedList(searchModel);
+
+            //prepare available types
+            var store = await _storeContext.GetCurrentStoreAsync();
+            var generics = await _genericAttributeService.GetAttributesForEntityAsync(store.Id, store.GetType().Name);
+
+            //prepare grid model
+            var model = await new CatalogProductListModel().PrepareToGridAsync(searchModel, products, () =>
+            {
+                return products.SelectAwait(async product =>
+                {
+
+                    //fill in model values from the entity
+                    var catalogModel = new CatalogProductModel();
+
+                    var productModel = await _productService.GetProductByIdAsync(product.productId);
+                    //fill in additional values (not existing in the entity)
+                    catalogModel.Name = productModel.Name ?? string.Empty;
+
+                    catalogModel.GTIN = productModel.Gtin ?? string.Empty;
+                    catalogModel.Id = product.Id;
+
+                    return catalogModel;
+                });
+            });
+
+            return model;
+        }
         #endregion
     }
 }

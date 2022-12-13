@@ -124,6 +124,26 @@
                         </div>
 
                         <div class="form-group row">
+                            <div class="col-md-3">
+                                <nop-label asp-for="QueryProductStoreMappingCatalog" />
+                            </div>
+                            <div class="col-md-9">
+                                <nop-editor asp-for="QueryProductStoreMappingCatalog" />
+                                <span asp-validation-for="QueryProductStoreMappingCatalog"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <nop-label asp-for="MutationCreateProductStoreMappingCatalog" />
+                            </div>
+                            <div class="col-md-9">
+                                <nop-editor asp-for="MutationCreateProductStoreMappingCatalog" />
+                                <span asp-validation-for="MutationCreateProductStoreMappingCatalog"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
                             <div class="col-md-9 offset-md-3">
                                 <button type="submit" name="save" class="btn btn-primary">@T("Admin.Common.Save")</button>
                             </div>

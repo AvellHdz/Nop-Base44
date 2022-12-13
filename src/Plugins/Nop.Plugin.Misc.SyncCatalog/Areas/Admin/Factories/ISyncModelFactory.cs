@@ -27,6 +27,16 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Factories
         Task<ConfigurationModel> PrepareModelAsync(ConfigurationModel model);
 
         /// <summary>
+        /// Prepare catalog search model
+        /// </summary>
+        /// <param name="searchModel">Currency search model</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation
+        /// The task result contains the currency search model
+        /// </returns>
+        Task<CatalogProductSearchModel> PrepareCatalogProductSearchModelAsync(CatalogProductSearchModel searchModel);
+
+        /// <summary>
         /// Prepate catalog Model
         /// </summary>
         /// <param name="model"></param>
@@ -58,6 +68,17 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Factories
         /// The task result contains the catalog model
         /// </returns>
         Task<IList<CatalogModel>> PrepareCatalogSyncModelAsync(SettingModel setting);
+
+        /// <summary>
+        /// Prepare paged catalog product list model
+        /// </summary>
+        /// <param name="searchModel">Catalog sync search model</param>
+        /// <param name="setting">Setting model</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation
+        /// The task result contains the catalog sync list model
+        /// </returns>
+        Task<CatalogListModel> PrepareCatalogProductSyncListModelAsync(CatalogSearchModel searchModel, SettingModel setting);
 
         #endregion
     }

@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <None Remove="Areas\Admin\Factories\orccnlq3.cju~" />
+    <None Remove="Areas\Admin\Views\CatalogSync\ListProducts.cshtml" />
     <None Remove="Areas\Admin\Views\CatalogSync\RevenewCreatePopup.cshtml" />
     <None Remove="Areas\Admin\Views\Sync\Configure.cshtml" />
     <None Remove="Areas\Admin\Views\Sync\List.cshtml" />
@@ -51,6 +52,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Areas\Admin\Views\CatalogSync\ListProducts.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
     <Content Include="Areas\Admin\Views\CatalogSync\RevenewCreatePopup.cshtml">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
