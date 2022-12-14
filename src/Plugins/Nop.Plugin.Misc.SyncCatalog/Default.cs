@@ -56,6 +56,11 @@
         public static string SystemNameMenuCatalog = "SyncCatalog";
 
         /// <summary>
+        /// Sync Settring
+        /// </summary>
+        public static string SystemNameMenuCatalogProduct = "SyncCatalogProduct";
+
+        /// <summary>
         /// Menu Admin Name
         /// </summary>
 
@@ -149,6 +154,23 @@
         /// Identifier name column
         /// </summary>
         public const string EXTERNAL_PRODUCT_MAPPING = "Plugin.Misc.SyncCatalog.Admin.Sync.Catalog.Product.Filed.External";
+
+
+        /// <summary>
+        /// Menu Admin Name
+        /// </summary>
+
+        public static string PluginCatalogProductTitle = "Plugin.Misc.SyncCatalog.Sync.Catalog.Product.SubMenu.Title";
+        
+        /// <summary>
+        /// Menu Admin Name
+        /// </summary>
+        public const string TITLE_ADD_NEW_PRODUCT_MAPPGIN = "Plugin.Misc.SyncCatalog.Admin.Catalog.Products.Sync.AddNew";
+        
+        /// <summary>
+        /// Menu Admin Name
+        /// </summary>
+        public const string TITLE_ADD_NEW_REVENEW_MAPPGIN = "Plugin.Misc.SyncCatalog.Admin.Catalog.Revenew.Sync.AddNew";
 
         #endregion
 

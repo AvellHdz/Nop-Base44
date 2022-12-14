@@ -1,0 +1,54 @@
+@model CatalogProductModel
+
+<div asp-validation-summary="All"></div>
+
+@if (ViewBag.RefreshPage == true)
+{
+    <script>
+        try { window.opener.document.forms['@(Context.Request.Query["formId"])'].@(Context.Request.Query["btnId"]).click(); }
+        catch (e) { }
+        window.close();
+    </script>
+}
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="form-horizontal">
+            <div class="form-horizontal">
+                <div class="cards-group">
+                    <div class="card card-default card-popup">
+                        <div class="card-body">
+                            <div class="form-group row" id="pnlProducts">
+                                <div class="col-md-3">
+                                    <nop-label asp-for="SelectedProductsId" />
+                                </div>
+                                <div class="col-md-9">
+                                    <nop-select asp-for="SelectedProductsId" asp-items="Model.AvailableProducts" asp-multiple="true" />
+                                    <script>
+                                        $(document).ready(function () {
+                                            var categoryIdsInput = $('#@Html.IdFor(model => model.SelectedProductsId)').data("kendoMultiSelect");
+                                            categoryIdsInput.setOptions({
+                                                autoClose: false,
+                                                filter: "contains"
+                                            });
+
+                                        @if (Model.AvailableProducts.Count == 0)
+                                        {
+                                            <text>
+                                                    categoryIdsInput.setOptions({
+                                                        enable: false
+                                                    });
+                                                categoryIdsInput._placeholder();
+                                                categoryIdsInput._enable();
+                                            </text>
+                                        }});
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

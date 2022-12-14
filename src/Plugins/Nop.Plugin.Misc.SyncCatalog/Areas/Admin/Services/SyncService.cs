@@ -165,7 +165,7 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Services
         /// <param name="login"></param>
         /// <param name="setting"></param>
         /// <returns></returns>
-        public async Task<AuthenticateModel> CreateStoreMappingAsync(RevenewStoreCatalog storeCatalog, SettingModel setting)
+        public async Task CreateStoreMappingAsync(RevenewStoreCatalog storeCatalog, SettingModel setting)
         {
             #region Data Sync
 
@@ -188,7 +188,7 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Services
                         .Replace(LiteralSync.REVENEW_MAPPING_CATALOG_CODE_NAME, mappings.TrimEnd(','));
 
 
-                    return await MutationLicenseService.ExceuteMutationAsyn<AuthenticateModel>(mutarionAuthRequest) ?? new();
+                    await MutationLicenseService.ExceuteMutationAsyn<string>(mutarionAuthRequest);
                 }
             }
             catch (Exception ex)
@@ -198,8 +198,6 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Services
 
 
             #endregion
-
-            return new();
         }
 
         /// <summary>
@@ -227,6 +225,44 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Services
 
             return new();
         }
+
+        /// <summary>
+        /// Create product mapping with API - Sync Catalog
+        /// </summary>
+        /// <param name="login"></param>
+        /// <param name="setting"></param>
+        /// <returns></returns>
+        public async Task CreateProductStoreMappingAsync(List<Productstore> productstores, SettingModel setting)
+        {
+            #region Data Sync
+
+            try
+            {
+                if (!string.IsNullOrEmpty(setting.UrlService)
+                    && !string.IsNullOrEmpty(setting.QueryAuthenticate))
+                {
+                    var detailt = " storeId:{0}, productId:{1}";
+
+                    var mappings = string.Empty;
+                    foreach (var mapping in productstores)
+                        mappings = mappings + "{" + string.Format(detailt, mapping.storeId, mapping.productId) + "},";
+
+                    var mutarionAuthRequest = setting.MutationCreateProductStoreMappingCatalog
+                        .Replace(LiteralSync.PRODUCT_STORES_CODE, mappings.TrimEnd(','));
+
+
+                    await MutationLicenseService.ExceuteMutationAsyn<string>(mutarionAuthRequest);
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+
+            #endregion
+        }
+
         #endregion
     }
 }

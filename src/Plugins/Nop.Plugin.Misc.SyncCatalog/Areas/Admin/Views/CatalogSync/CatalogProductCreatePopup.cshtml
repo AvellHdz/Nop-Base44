@@ -1,0 +1,30 @@
+@model CatalogProductModel
+
+@{
+    Layout = "_AdminPopupLayout";
+
+    //page title
+    ViewBag.PageTitle = T(Default.TITLE_ADD_NEW_PRODUCT_MAPPGIN).Text;
+}
+
+<form asp-controller="CatalogSync" asp-action="CatalogProductCreatePopup"
+          asp-route-btnId="@Context.Request.Query["btnId"]"
+          asp-route-formId="@Context.Request.Query["formId"]">
+        <section class="content">
+            <div class="container-fluid">
+                <div class="content-header clearfix">
+                    <h1 class="float-left">
+                        @T("Admin.Catalog.Products.TierPrices.AddNew")
+                    </h1>
+                    <div class="float-right">
+                        <button type="submit" name="save" class="btn btn-primary">
+                            <i class="far fa-save"></i>
+                            @T("Admin.Common.Save")
+                        </button>
+                        @await Component.InvokeAsync("AdminWidget", new { widgetZone = AdminWidgetZones.ProductTierPriceDetailsButtons })
+                    </div>
+                </div>
+            @await Html.PartialAsync("_CreateOrUpdateProductCreate", Model)
+            </div>
+        </section>
+    </form>

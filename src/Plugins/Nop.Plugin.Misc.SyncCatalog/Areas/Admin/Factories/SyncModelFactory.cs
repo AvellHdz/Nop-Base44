@@ -323,14 +323,18 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Factories
         /// A task that represents the asynchronous operation
         /// The task result contains the catalog sync list model
         /// </returns>
-        public virtual async Task<CatalogListModel> PrepareCatalogProductSyncListModelAsync(CatalogSearchModel searchModel, SettingModel setting)
+        public virtual async Task<CatalogProductListModel> PrepareCatalogProductSyncListModelAsync(CatalogProductSearchModel searchModel, SettingModel setting)
         {
             if (searchModel == null)
                 throw new ArgumentNullException(nameof(searchModel));
 
-            //get revenews services
-            var products = (await _syncService.GetProductsStoreCatalog(string.Empty, setting))
-                .productStore.ToPagedList(searchModel);
+            //get product services
+            var productSync = await _syncService.GetProductsStoreCatalog(string.Empty, setting);
+
+            productSync.productStore ??= new[] { new Productstore() };
+
+            var products = productSync.productStore.ToPagedList(searchModel);
+
 
             //prepare available types
             var store = await _storeContext.GetCurrentStoreAsync();
@@ -345,18 +349,48 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Factories
                     //fill in model values from the entity
                     var catalogModel = new CatalogProductModel();
 
-                    var productModel = await _productService.GetProductByIdAsync(product.productId);
-                    //fill in additional values (not existing in the entity)
-                    catalogModel.Name = productModel.Name ?? string.Empty;
+                    if (product.Id > 0)
+                    {
+                        var productModel = await _productService.GetProductByIdAsync(product.productId);
+                        //fill in additional values (not existing in the entity)
+                        catalogModel.Name = productModel?.Name ?? "SN";
 
-                    catalogModel.GTIN = productModel.Gtin ?? string.Empty;
-                    catalogModel.Id = product.Id;
+                        catalogModel.GTIN = productModel?.Gtin ?? "SN";
+                        catalogModel.IdMapping = product.Id;
+                    }
 
                     return catalogModel;
+
                 });
             });
 
             return model;
+        }
+
+        /// <summary>
+        /// Prepare paged catalog model - Sync Service
+        /// </summary>
+        /// <param name="setting">Setting model</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation
+        /// The task result contains the catalog model
+        /// </returns>
+        public virtual async Task<CatalogProductModel> PrepareCatalogProductSyncModelAsync(SettingModel setting)
+        {
+            //get product services
+            var productSync = await _syncService.GetProductsStoreCatalog(string.Empty, setting);
+
+            productSync.productStore ??= new[] { new Productstore() };
+
+            var filter = productSync.productStore.Select(c => c.productId).ToList();
+
+            //prepare available types
+            var store = await _storeContext.GetCurrentStoreAsync();
+
+            var catalogModels = new CatalogProductModel();
+
+            await _basePluginAdminModelFactory.PrepareProductsAsync(catalogModels.AvailableProducts, filterValues: filter);
+            return catalogModels;
         }
         #endregion
     }

@@ -91,6 +91,7 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Controllers
             syncSetting.QueryRevenewStoreMappingCatalog = model.QueryRevenewStoreMappingCatalog;
             syncSetting.QueryProductStoreMappingCatalog = model.QueryProductStoreMappingCatalog;
             syncSetting.MutationCreateRevenewStoreMappingCatalog = model.MutationCreateRevenewStoreMappingCatalog;
+            syncSetting.MutationCreateProductStoreMappingCatalog = model.MutationCreateProductStoreMappingCatalog;
 
             /* We do not clear cache after each setting update.
              * This behavior can increase performance because cached settings will not be cleared 

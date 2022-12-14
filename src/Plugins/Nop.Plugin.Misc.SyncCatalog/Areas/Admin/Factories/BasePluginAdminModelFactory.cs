@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Nop.Core;
+using Nop.Services.Catalog;
 using Nop.Services.Common;
 using Nop.Services.Localization;
 
@@ -16,6 +17,7 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Factories
         private readonly ILocalizationService _localizationService;
         private readonly IGenericAttributeService _genericAttributeService;
         private readonly IStoreContext _storeContext;
+        private readonly IProductService _productService;
 
         #endregion
 
@@ -23,11 +25,13 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Factories
 
         public BasePluginAdminModelFactory(ILocalizationService localizationService,
             IGenericAttributeService genericAttributeService,
-            IStoreContext storeContext)
+            IStoreContext storeContext,
+            IProductService productService)
         {
             _localizationService = localizationService;
             _genericAttributeService = genericAttributeService;
             _storeContext = storeContext;
+            _productService = productService;
         }
 
         #endregion
@@ -152,6 +156,37 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Factories
 
                 if (!filterValues.Contains(brand.Value))
                     items.Add(new SelectListItem { Value = $"{brand.Id}", Text = brand.Value });
+            }
+
+            //insert special item for the default value
+            await PrepareDefaultItemAsync(items, withSpecialDefaultItem, defaultItemText);
+        }
+        
+        /// <summary>
+        /// Prepare product types
+        /// </summary>
+        /// <param name="items">Activity log type items</param>
+        /// <param name="withSpecialDefaultItem">Whether to insert the first special item for the default value</param>
+        /// <param name="defaultItemText">Default item text; pass null to use default value of the default item text</param>
+        /// <returns>A task that represents the asynchronous operation</returns>
+        public virtual async Task PrepareProductsAsync(IList<SelectListItem> items, bool withSpecialDefaultItem = true, string defaultItemText = null, List<int> filterValues = default)
+        {
+            if (items == null)
+                throw new ArgumentNullException(nameof(items));
+
+            filterValues ??= new List<int>();
+
+            //prepare available types
+            var store = await _storeContext.GetCurrentStoreAsync();
+            var generics = await _genericAttributeService.GetAttributesForEntityAsync(store.Id, store.GetType().Name);
+
+            var products = (await _productService.SearchProductsAsync())
+                .Select(c => c);
+
+            foreach (var product in products)
+            {
+                if (!filterValues.Contains(product.Id))
+                    items.Add(new SelectListItem { Value = $"{product.Id}", Text = product.Name });
             }
 
             //insert special item for the default value

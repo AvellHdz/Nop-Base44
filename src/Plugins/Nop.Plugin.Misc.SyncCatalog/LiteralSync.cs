@@ -78,5 +78,10 @@ namespace Nop.Plugin.Misc.SyncCatalog
         /// Revenew Mapping Catalog Code Detail Name
         /// </summary>
         public const string REVENEW_MAPPING_CATALOG_CODE_DETAIL_NAME = "externalID: {0}, makeUp:{1}";
+
+        /// <summary>
+        /// Revenew Mapping Catalog Code Name
+        /// </summary>
+        public const string PRODUCT_STORES_CODE = "productStoresCode";
     }
 }

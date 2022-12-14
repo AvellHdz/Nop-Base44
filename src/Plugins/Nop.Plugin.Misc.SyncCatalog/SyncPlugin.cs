@@ -81,9 +81,13 @@ namespace Nop.Plugin.Misc.SyncCatalog
                 [$"{Default.RESOURCE_PREFIX}.Admin.Sync.Catalog.Revenew.Filed.Makeup"] = "Ganancia",
                 [$"{Default.RESOURCE_PREFIX}.Sync.Catalog.SubMenu.Title"] = "Catálogo de ganancias",
                 [$"{Default.RESOURCE_PREFIX}.Admin.Sync.Catalog.Revenew.AddNew"] = "Agregar nuevo revenew",
+                [$"{Default.RESOURCE_PREFIX}.Sync.Catalog.Product.SubMenu.Title"] = "Productos de Ordenes a Sync",
+                [$"{Default.RESOURCE_PREFIX}.Admin.Sync.Catalog.Product.AddNew"] = "Agregar nueva relación",
                 [Default.IDENTIFIER_PRODUCT_MAPPING] = "Producto en Ordenes a Sincronizar",
                 [Default.NAME_PRODUCT_MAPPING] = "Producto",
-                [Default.EXTERNAL_PRODUCT_MAPPING] = "Product Code"
+                [Default.EXTERNAL_PRODUCT_MAPPING] = "Product Code",
+                [Default.TITLE_ADD_NEW_PRODUCT_MAPPGIN] = "Agregar relacion de productos",
+                [Default.TITLE_ADD_NEW_REVENEW_MAPPGIN] = "Agregar relacion de ganancia por tipo"
             });
 
             // Add new permission record
@@ -157,9 +161,22 @@ namespace Nop.Plugin.Misc.SyncCatalog
                 Url = string.Empty,
                 RouteValues = new RouteValueDictionary() { { "area", "admin" } },
             };
+            
+            var subMenuCatalogProduct = new SiteMapNode()
+            {
+                SystemName = Default.SystemNameMenuCatalogProduct,
+                Title = await _localizationService.GetResourceAsync(Default.PluginCatalogProductTitle),
+                ControllerName = "CatalogSync",
+                ActionName = "ListProducts",
+                Visible = true,
+                IconClass = "fas fa-solid fa-file-code",
+                Url = string.Empty,
+                RouteValues = new RouteValueDictionary() { { "area", "admin" } },
+            };
 
             menuItem.ChildNodes.Add(subMenuSetting);
             menuItem.ChildNodes.Add(subMenuCatalog);
+            menuItem.ChildNodes.Add(subMenuCatalogProduct);
 
             rootNode.ChildNodes.Add(menuItem);
 

@@ -78,7 +78,17 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Factories
         /// A task that represents the asynchronous operation
         /// The task result contains the catalog sync list model
         /// </returns>
-        Task<CatalogListModel> PrepareCatalogProductSyncListModelAsync(CatalogSearchModel searchModel, SettingModel setting);
+        Task<CatalogProductListModel> PrepareCatalogProductSyncListModelAsync(CatalogProductSearchModel searchModel, SettingModel setting);
+
+        /// <summary>
+        /// Prepare paged catalog model - Sync Service
+        /// </summary>
+        /// <param name="setting">Setting model</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation
+        /// The task result contains the catalog model
+        /// </returns>
+        Task<CatalogProductModel> PrepareCatalogProductSyncModelAsync(SettingModel setting);
 
         #endregion
     }

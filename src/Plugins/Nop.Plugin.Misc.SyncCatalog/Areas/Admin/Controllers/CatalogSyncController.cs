@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using iTextSharp.text;
 using Microsoft.AspNetCore.Mvc;
 using Nop.Core;
 using Nop.Core.Domain.Configuration;
@@ -251,7 +253,7 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Controllers
             if (!permissionRecord.Any())
                 return AccessDeniedView();
 
-            var model = await _syncModelFactory.PrepareCatalogSearchModelAsync(new());
+            var model = await _syncModelFactory.PrepareCatalogProductSearchModelAsync(new());
 
             return View(model);
 
@@ -259,7 +261,7 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Controllers
 
         [HttpPost]
         /// <returns>A task that represents the asynchronous operation</returns>
-        public virtual async Task<IActionResult> CatalogProductSyncList(CatalogSearchModel searchModel)
+        public virtual async Task<IActionResult> CatalogProductSyncList(CatalogProductSearchModel searchModel)
         {
             if (!await _permissionService.AuthorizeAsync(StandardPermissionProvider.ManageProducts))
                 return await AccessDeniedDataTablesJson();
@@ -269,11 +271,69 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Controllers
             var syncSetting = await _settingService.LoadSettingAsync<SettingModel>(storeScope);
 
             //prepare model
-            var model = await _syncModelFactory.PrepareCatalogSyncListModelAsync(searchModel, syncSetting);
+            var model = await _syncModelFactory.PrepareCatalogProductSyncListModelAsync(searchModel, syncSetting);
 
             return Json(model);
         }
 
+
+        /// <returns>A task that represents the asynchronous operation</returns>
+        public virtual async Task<IActionResult> CatalogProductCreatePopup()
+        {
+            var permissionRecord = (await _permissionService.GetAllPermissionRecordsAsync()).Where(x => x.Name == Default.PermissionManagerName);
+            if (!permissionRecord.Any())
+                return AccessDeniedView();
+
+            //load settings for a chosen store scope
+            var storeScope = await _storeContext.GetActiveStoreScopeConfigurationAsync();
+            var syncSetting = await _settingService.LoadSettingAsync<SettingModel>(storeScope);
+
+            //get filters services
+
+            var model = await _syncModelFactory.PrepareCatalogProductSyncModelAsync(syncSetting);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [FormValueRequired("save")]
+        /// <returns>A task that represents the asynchronous operation</returns>
+        public virtual async Task<IActionResult> CatalogProductCreatePopup(CatalogProductModel model)
+        {
+            var permissionRecord = (await _permissionService.GetAllPermissionRecordsAsync()).Where(x => x.Name == Default.PermissionManagerName);
+            if (!permissionRecord.Any())
+                return AccessDeniedView();
+
+            //load settings for a chosen store scope
+            var storeScope = await _storeContext.GetActiveStoreScopeConfigurationAsync();
+            var syncSetting = await _settingService.LoadSettingAsync<SettingModel>(storeScope);
+
+            if (ModelState.IsValid)
+            {
+                var catalog = new List<Productstore>();
+
+                foreach (var produc in model.SelectedProductsId)
+                {
+                    catalog.Add(new()
+                    {
+                        productId = produc,
+                        storeId = syncSetting.StoreId
+
+                    });
+                }
+                await _syncService.CreateProductStoreMappingAsync(catalog, syncSetting);
+
+                ViewBag.RefreshPage = true;
+
+                return View(model);
+            }
+
+            //prepare model
+            model = await _syncModelFactory.PrepareCatalogProductSyncModelAsync(syncSetting);
+
+            //if we got this far, something failed, redisplay form
+            return View(model);
+        }
         #endregion
     }
 }
