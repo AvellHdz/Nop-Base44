@@ -5,7 +5,9 @@ using Microsoft.AspNetCore.Routing;
 using Nop.Core;
 using Nop.Core.Domain.Security;
 using Nop.Data;
+using Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Models;
 using Nop.Services.Common;
+using Nop.Services.Configuration;
 using Nop.Services.Customers;
 using Nop.Services.Localization;
 using Nop.Services.Plugins;
@@ -23,6 +25,8 @@ namespace Nop.Plugin.Misc.SyncCatalog
         private readonly ILocalizationService _localizationService;
         private readonly IPermissionService _permissionService;
         private readonly ICustomerService _customerService;
+        private readonly ISettingService _settingService;
+        private readonly IStoreContext _storeContext;
         private readonly IRepository<PermissionRecord> _permissionRecordRepository;
 
         #endregion
@@ -31,16 +35,19 @@ namespace Nop.Plugin.Misc.SyncCatalog
 
         public SyncPlugin(IWebHelper webHelper,
             ILocalizationService localizationService,
-            IPermissionService permissionService,            
+            IPermissionService permissionService,
             ICustomerService customerService,
+            ISettingService settingService,
+            IStoreContext storeContext,
             IRepository<PermissionRecord> permissionRecordRepository)
         {
             _webHelper = webHelper;
             _localizationService = localizationService;
             _permissionService = permissionService;
             _customerService = customerService;
+            _settingService = settingService;
+            _storeContext = storeContext;
             _permissionRecordRepository = permissionRecordRepository;
-
         }
 
         #endregion
@@ -87,11 +94,48 @@ namespace Nop.Plugin.Misc.SyncCatalog
                 [Default.NAME_PRODUCT_MAPPING] = "Producto",
                 [Default.EXTERNAL_PRODUCT_MAPPING] = "Product Code",
                 [Default.TITLE_ADD_NEW_PRODUCT_MAPPGIN] = "Agregar relacion de productos",
-                [Default.TITLE_ADD_NEW_REVENEW_MAPPGIN] = "Agregar relacion de ganancia por tipo"
+                [Default.TITLE_ADD_NEW_REVENEW_MAPPGIN] = "Agregar relacion de ganancia por tipo",
+
+                [Default.RESOURCE_URL_SERVICES] = "API Services - URL",
+                [Default.RESOURCE_USER_NAME] = "Usuario",
+                [Default.RESOURCE_PASSWORD] = "Contraseña",
+                [Default.RESOURCE_STORE_ID] = "Identificador Tienda",
+                [Default.RESOURCE_QUERY_AUTHENTICATE] = "Query - Obtener Autentificador",
+                [Default.RESOURCE_QUERY_REVENEW_CATALOG] = "Query - Catálogo Revenew",
+                [Default.RESOURCE_QUERY_CATEGORY_CATALOG] = "Query - Catálogo de Categorías",
+                [Default.RESOURCE_QUERY_BRAND_CATALOG] = "Query - Catálogo de Marcas",
+                [Default.RESOURCE_QUERY_REVENEW_STORE_CATALOG] = "Query - Catálogo de Ganancia de Tienda",
+                [Default.RESOURCE_QUERY_REVENEW_STORE_MAPPING_CATALOG] = "Query - Mapeo Catálogos",
+                [Default.RESOURCE_MUTATION_CREATE_REVENEW_STORE_MAPPING_CATALOG] = "Mutation - Creación Mapeo de Tienda",
+                [Default.RESOURCE_QUERY_PRODUCT_STORE_MAPPING_CATALOG] = "Query - Mapeo de Productos",
+                [Default.RESOURCE_MUTATION_CREATE_PRODUCT_STORE_MAPPING_CATALOG] = "Mutation - Creación Mapeo de Productos"
             });
 
-            // Add new permission record
+            // Settings Default
+            var storeScope = await _storeContext.GetActiveStoreScopeConfigurationAsync();
+            var syncSetting = await _settingService.LoadSettingAsync<SettingModel>(storeScope);
 
+            syncSetting.QueryAuthenticate = Default.DefaultSettingQueryAuthenticate;
+            syncSetting.QueryRevenewCatalog = Default.DefaultSettingQueryRevenewCatalog;
+            syncSetting.QueryCategoryCatalog = Default.DefaultSettingQueryCategoryCatalog;
+            syncSetting.QueryBrandCatalog = Default.DefaultSettingQueryBrandCatalog;
+            syncSetting.QueryRevenewStoreCatalog = Default.DefaultSettingQueryRevenewStoreCatalog;
+            syncSetting.QueryRevenewStoreMappingCatalog = Default.DefaultSettingQueryRevenewStoreMappingCatalog;
+            syncSetting.QueryProductStoreMappingCatalog = Default.DefaultSettingQueryProductStoreMappingCatalog;
+            syncSetting.MutationCreateRevenewStoreMappingCatalog = Default.DefaultSettingMutationCreateRevenewStoreMappingCatalog;
+            syncSetting.MutationCreateProductStoreMappingCatalog = Default.DefaultSettingMutationCreateProductStoreMappingCatalog;
+
+            await _settingService.SaveSettingAsync(syncSetting, settings => settings.QueryAuthenticate, clearCache: false);
+            await _settingService.SaveSettingAsync(syncSetting, settings => settings.QueryRevenewCatalog, clearCache: false);
+            await _settingService.SaveSettingAsync(syncSetting, settings => settings.QueryCategoryCatalog, clearCache: false);
+            await _settingService.SaveSettingAsync(syncSetting, settings => settings.QueryBrandCatalog, clearCache: false);
+            await _settingService.SaveSettingAsync(syncSetting, settings => settings.QueryRevenewStoreCatalog, clearCache: false);
+            await _settingService.SaveSettingAsync(syncSetting, settings => settings.QueryRevenewStoreMappingCatalog, clearCache: false);
+            await _settingService.SaveSettingAsync(syncSetting, settings => settings.MutationCreateRevenewStoreMappingCatalog, clearCache: false);
+            await _settingService.SaveSettingAsync(syncSetting, settings => settings.QueryProductStoreMappingCatalog, clearCache: false);
+            await _settingService.SaveSettingAsync(syncSetting, settings => settings.MutationCreateProductStoreMappingCatalog, clearCache: false);
+
+            // Add new permission record
             var catalogManageSystem = new PermissionRecord
             {
                 Name = Default.PermissionManagerName,
@@ -161,7 +205,7 @@ namespace Nop.Plugin.Misc.SyncCatalog
                 Url = string.Empty,
                 RouteValues = new RouteValueDictionary() { { "area", "admin" } },
             };
-            
+
             var subMenuCatalogProduct = new SiteMapNode()
             {
                 SystemName = Default.SystemNameMenuCatalogProduct,

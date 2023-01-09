@@ -2,11 +2,26 @@
 {
     public class ConfigurationModel
     {
-        public string UrlService { get; set; }
-        public string UserName { get; set; }
-        public string Password { get; set; }
-        public int StoreId { get; set; }
 
+        /// <summary>
+        /// Url Service
+        /// </summary>
+        public string UrlService { get; set; }
+
+        /// <summary>
+        /// User Name
+        /// </summary>
+        public string UserName { get; set; }
+
+        /// <summary>
+        /// Password
+        /// </summary>
+        public string Password { get; set; }
+
+        /// <summary>
+        /// Store Id
+        /// </summary>
+        public int StoreId { get; set; }
 
         /// <summary>
         /// Query autjenticate Sync Services
@@ -54,6 +69,9 @@
         /// </summary>
         public string MutationCreateProductStoreMappingCatalog { get; set; }
 
+        /// <summary>
+        /// Hide General Block
+        /// </summary>
         public bool HideGeneralBlock { get; set; }
     }
 }

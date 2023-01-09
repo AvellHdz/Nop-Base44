@@ -4,6 +4,9 @@ namespace Nop.Plugin.Misc.SyncCatalog
 {
     public class LiteralSync
     {
+
+        #region Static
+
         /// <summary>
         /// Request email name
         /// </summary>
@@ -82,6 +85,8 @@ namespace Nop.Plugin.Misc.SyncCatalog
         /// <summary>
         /// Revenew Mapping Catalog Code Name
         /// </summary>
-        public const string PRODUCT_STORES_CODE = "productStoresCode";
+        public const string PRODUCT_STORES_CODE = "productStoresCode"; 
+        
+        #endregion
     }
 }
