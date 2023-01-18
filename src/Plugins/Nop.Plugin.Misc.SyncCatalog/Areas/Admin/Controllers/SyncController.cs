@@ -58,12 +58,18 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Controllers
         #region Methods
 
         /// <returns>A task that represents the asynchronous operation</returns>
-        public async Task<IActionResult> Configure()
+        public async Task<IActionResult> Configure(bool lives = false)
         {
             if (!await _permissionService.AuthorizeAsync(StandardPermissionProvider.ManageWidgets))
                 return AccessDeniedView();
 
             var model = await _syncModelFactory.PrepareModelAsync(new());
+
+            if (lives)
+            {
+                await LoginTest(model);
+                return await Configure();
+            }
 
             return View(model);
         }

@@ -25,7 +25,17 @@ namespace Nop.Plugin.Misc.SyncCatalog
         /// <summary>
         /// Request error catalog
         /// </summary>
-        public const string NOT_SUCCESS_CATALOG = "No es posible realizar la sincronización de los catálogos";
+        public const string NOT_SUCCESS_BRAND_CATALOG = "No se encontro catálogo de marcar para sincronizar.";
+        
+        /// <summary>
+        /// Request error catalog
+        /// </summary>
+        public const string NOT_SUCCESS_REVENEW_CATALOG = "No se encontro catálogo de ganancias para sincronizar.";
+        
+        /// <summary>
+        /// Request error catalog
+        /// </summary>
+        public const string NOT_SUCCESS_CATEGORY_CATALOG = "No se encontro catálogo de categoría para sincronizar.";
 
         /// <summary>
         /// Request email name

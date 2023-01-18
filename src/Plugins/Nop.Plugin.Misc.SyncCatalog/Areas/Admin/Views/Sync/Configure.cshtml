@@ -148,10 +148,11 @@
                                 <button type="submit" name="save" class="btn btn-primary">@T("Admin.Common.Save")</button>
                             </div>
                             <div class="col-md-9 offset-md-3">
-                                <button asp-action="LoginTest" type="submit" name="save" class="btn btn-success">
+                                <a asp-controller="Sync" asp-action="Configure" asp-route-lives="true" class="btn btn-success">
                                     <i class="fas fa-tasks"></i>
                                     @T(Default.RESOURCE_BOTTON_TEST)
-                                </button>
+
+                                </a>
                             </div>
                         </div>
                     </div>

@@ -88,7 +88,7 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Controllers
             var revenews = await _syncService.GetRevenewCatalog(authenticate.login.accessToken, syncSetting);
 
             if (!revenews.revenew.Any())
-                _notificationService.WarningNotification(LiteralSync.NOT_SUCCESS_CATALOG);
+                _notificationService.WarningNotification(LiteralSync.NOT_SUCCESS_REVENEW_CATALOG);
 
             foreach (var revenew in revenews.revenew)
                 await _genericAttributeService.SaveAttributeAsync(_storeContext.GetCurrentStore(), $"{Default.GenericRevenewCatalog}{revenew.id}", revenew.name);
@@ -101,7 +101,7 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Controllers
             var categories = await _syncService.GetCategoryCatalog(authenticate.login.accessToken, syncSetting);
 
             if (!categories.category.Any())
-                _notificationService.WarningNotification(LiteralSync.NOT_SUCCESS_CATALOG);
+                _notificationService.WarningNotification(LiteralSync.NOT_SUCCESS_CATEGORY_CATALOG);
 
             foreach (var category in categories.category)
                 await _genericAttributeService.SaveAttributeAsync(_storeContext.GetCurrentStore(), $"{Default.GenericCategoryCatalog}{category.externalId}", category.name);
@@ -114,7 +114,7 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Controllers
             var brands = await _syncService.GetBransCatalog(authenticate.login.accessToken, syncSetting);
 
             if (!brands.brandsCatalog.Any())
-                _notificationService.WarningNotification(LiteralSync.NOT_SUCCESS_CATALOG);
+                _notificationService.WarningNotification(LiteralSync.NOT_SUCCESS_BRAND_CATALOG);
 
             foreach (var brand in brands.brandsCatalog)
                 await _genericAttributeService.SaveAttributeAsync(_storeContext.GetCurrentStore(), $"{Default.GenericBrandCatalog}{brand.externalId}", brand.name);
@@ -136,7 +136,7 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Controllers
             if (liveRates)
             {
                 await LiveCatalog();
-                _notificationService.SuccessNotification("Sincronización Exitosa");
+                _notificationService.SuccessNotification("Proceso concluido");
                 //return RedirectToAction("Index");
             }
             var model = await _syncModelFactory.PrepareCatalogSearchModelAsync(new());
