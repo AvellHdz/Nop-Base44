@@ -283,7 +283,7 @@
         /// <summary>
         /// Revenew Store Catalog
         /// </summary>
-        public static string DefaultSettingQueryRevenewStoreCatalog = "query{revenewStore(storeId: storeCode){storeId,revenewId,priority,type}}";
+        public static string DefaultSettingQueryRevenewStoreCatalog = "query{revenewStore(storeId: storeCode){id,storeId,revenewId,priority,type}}";
 
         /// <summary>
         /// Revenew Store Mapping
