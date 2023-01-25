@@ -58,7 +58,7 @@ namespace Nop.Plugin.Misc.SyncCatalog
         /// </summary>
         public override string GetConfigurationPageUrl()
         {
-            return $"{_webHelper.GetStoreLocation()}Admin/Sendinblue/Configure";
+            return $"{_webHelper.GetStoreLocation()}Admin/Syn/Configure";
         }
 
         /// <summary>
@@ -122,6 +122,8 @@ namespace Nop.Plugin.Misc.SyncCatalog
             syncSetting.QueryRevenewStoreMappingCatalog = Default.DefaultSettingQueryRevenewStoreMappingCatalog;
             syncSetting.QueryProductStoreMappingCatalog = Default.DefaultSettingQueryProductStoreMappingCatalog;
             syncSetting.MutationCreateRevenewStoreMappingCatalog = Default.DefaultSettingMutationCreateRevenewStoreMappingCatalog;
+            syncSetting.MutationUpdateRevenewStoreMappingCatalog = Default.DefaultSettingMutationUpdateRevenewStoreMappingCatalog;
+            syncSetting.MutationDeleteRevenewStoreMappingCatalog = Default.DefaultSettingMutationDeleteRevenewStoreMappingCatalog;
             syncSetting.MutationCreateProductStoreMappingCatalog = Default.DefaultSettingMutationCreateProductStoreMappingCatalog;
 
             await _settingService.SaveSettingAsync(syncSetting, settings => settings.QueryAuthenticate, clearCache: false);
