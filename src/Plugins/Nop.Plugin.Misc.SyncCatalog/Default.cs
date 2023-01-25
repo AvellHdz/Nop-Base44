@@ -147,6 +147,16 @@
         /// Mutation Create Product Store Mapping Catalog
         /// </summary>
         public const string RESOURCE_MUTATION_CREATE_PRODUCT_STORE_MAPPING_CATALOG = "Plugin.Misc.SyncCatalog.Admin.Common.Sync.MutationCreateProductStoreMappingCatalog";
+        
+        /// <summary>
+        /// Mutation Update Product Store Mapping Catalog
+        /// </summary>
+        public const string RESOURCE_MUTATION_UPDATE_REVENEW_STORE_MAPPING_CATALOG = "Plugin.Misc.SyncCatalog.Admin.Common.Sync.MutationUpdateProductStoreMappingCatalog";
+        
+        /// <summary>
+        /// Mutation Delete Product Store Mapping Catalog
+        /// </summary>
+        public const string RESOURCE_MUTATION_DELETE_REVENEW_STORE_MAPPING_CATALOG = "Plugin.Misc.SyncCatalog.Admin.Common.Sync.MutationDeleteProductStoreMappingCatalog";
 
         /// <summary>
         /// Botton test name
@@ -288,7 +298,7 @@
         /// <summary>
         /// Revenew Store Mapping
         /// </summary>
-        public static string DefaultSettingQueryRevenewStoreMappingCatalog = "query{revenewStoreMapping(revenewStoreId:[revenewStoreCode]){revenewStoreId,externalId,makeup,active}}";
+        public static string DefaultSettingQueryRevenewStoreMappingCatalog = "query{revenewStoreMapping(revenewStoreId:[revenewStoreCode]){id,revenewStoreId,externalId,makeup,active}}";
 
         /// <summary>
         /// Product Store Mapping
@@ -299,6 +309,16 @@
         /// Create Revenew Store Mapping
         /// </summary>
         public static string DefaultSettingMutationCreateRevenewStoreMappingCatalog = "mutation{createRevenewStoreMapping(revenewCreate:{revenewStored:revenewStoredCode,storeId:storeIdCode,revenewTypeId:revenewTypeCode,priroty:priorityCode,revenewMappingCatalogs:[revenewMappingCatalogCode]})}";
+
+        /// <summary>
+        /// Update Product Store Mapping
+        /// </summary>
+        public static string DefaultSettingMutationUpdateRevenewStoreMappingCatalog = "mutation{updateRevenewStoreMapping(revenewUpdate:{revenewStored:revenewStoredCode,storeId:storeIdCode,revenewTypeId:revenewTypeCode,priroty:priorityCode,revenewMappingCatalogs:[revenewMappingCatalogCode]})}";//"mutation{updateRevenewStoreMapping(revenewUpdate:{revenewStored:revenewStoredCode,storeId:storeIdCode,revenewTypeId:revenewTypeIdCode,priroty:prirotyCode,revenewMappingCatalogs:[{externalID:" + '"' + "externalIDCode" + '"' + ",makeUp:makeUpCode}]})}";
+        
+        /// <summary>
+        /// Delete Product Store Mapping
+        /// </summary>
+        public static string DefaultSettingMutationDeleteRevenewStoreMappingCatalog = "mutation{deleteRevenewStoreMapping(revenewDelete: {revenewStored:revenewStoredCode,storeId:storeIdCode,revenewTypeId:revenewTypeCode,priroty:priorityCode,revenewMappingCatalogs:[revenewMappingCatalogCode]})}";//"mutation{updateRevenewStoreMapping(revenewUpdate:{revenewStored:revenewStoredCode,storeId:storeIdCode,revenewTypeId:revenewTypeIdCode,priroty:prirotyCode,revenewMappingCatalogs:[{externalID:" + '"' + "externalIDCode" + '"' + ",makeUp:makeUpCode}]})}";
 
         /// <summary>
         /// Create Product Store Mapping

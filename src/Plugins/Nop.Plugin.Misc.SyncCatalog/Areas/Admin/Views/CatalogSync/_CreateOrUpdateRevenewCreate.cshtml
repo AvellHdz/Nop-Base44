@@ -1,6 +1,8 @@
 @model CatalogModel
 
 <div asp-validation-summary="All"></div>
+<input asp-for="IdMapping" type="hidden" />
+<input asp-for="IdRevenew" type="hidden" />
 
 @if (ViewBag.RefreshPage == true)
 {

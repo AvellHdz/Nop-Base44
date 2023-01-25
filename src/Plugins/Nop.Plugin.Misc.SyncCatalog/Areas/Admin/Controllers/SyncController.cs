@@ -97,6 +97,8 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Controllers
             syncSetting.QueryRevenewStoreMappingCatalog = model.QueryRevenewStoreMappingCatalog;
             syncSetting.QueryProductStoreMappingCatalog = model.QueryProductStoreMappingCatalog;
             syncSetting.MutationCreateRevenewStoreMappingCatalog = model.MutationCreateRevenewStoreMappingCatalog;
+            syncSetting.MutationUpdateRevenewStoreMappingCatalog = model.MutationUpdateRevenewStoreMappingCatalog;
+            syncSetting.MutationDeleteRevenewStoreMappingCatalog = model.MutationDeleteRevenewStoreMappingCatalog;
             syncSetting.MutationCreateProductStoreMappingCatalog = model.MutationCreateProductStoreMappingCatalog;
 
             /* We do not clear cache after each setting update.
@@ -113,6 +115,8 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Controllers
             await _settingService.SaveSettingAsync(syncSetting, settings => settings.QueryRevenewStoreCatalog, clearCache: false);
             await _settingService.SaveSettingAsync(syncSetting, settings => settings.QueryRevenewStoreMappingCatalog, clearCache: false);
             await _settingService.SaveSettingAsync(syncSetting, settings => settings.MutationCreateRevenewStoreMappingCatalog, clearCache: false);
+            await _settingService.SaveSettingAsync(syncSetting, settings => settings.MutationUpdateRevenewStoreMappingCatalog, clearCache: false);
+            await _settingService.SaveSettingAsync(syncSetting, settings => settings.MutationDeleteRevenewStoreMappingCatalog, clearCache: false);
             await _settingService.SaveSettingAsync(syncSetting, settings => settings.QueryProductStoreMappingCatalog, clearCache: false);
             await _settingService.SaveSettingAsync(syncSetting, settings => settings.MutationCreateProductStoreMappingCatalog, clearCache: false);
 

@@ -4,17 +4,17 @@
     Layout = "_AdminPopupLayout";
 
     //page title
-    ViewBag.PageTitle = T($"{Default.RESOURCE_PREFIX}.Admin.Sync.Catalog.Product.AddNew").Text;
+    ViewBag.PageTitle = T($"{Default.RESOURCE_PREFIX}.Admin.Sync.Catalog.Product.Edit").Text;
 }
 
-<form asp-controller="CatalogSync" asp-action="RevenewCreatePopup"
+<form asp-controller="CatalogSync" asp-action="RevenewEditPopup"
           asp-route-btnId="@Context.Request.Query["btnId"]"
           asp-route-formId="@Context.Request.Query["formId"]">
         <section class="content">
             <div class="container-fluid">
                 <div class="content-header clearfix">
                     <h1 class="float-left">
-                        @T($"{Default.RESOURCE_PREFIX}.Admin.Sync.Catalog.Product.AddNew")
+                        @T($"{Default.RESOURCE_PREFIX}.Admin.Sync.Catalog.Product.Edit")
                     </h1>
                     <div class="float-right">
                         <button type="submit" name="save" class="btn btn-primary">

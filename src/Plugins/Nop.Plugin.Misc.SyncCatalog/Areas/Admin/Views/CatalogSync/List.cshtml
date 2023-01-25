@@ -34,6 +34,7 @@
                                 {
                                 Name = "revenew-grid",
                                 UrlRead = new DataUrl("CatalogSyncList", "CatalogSync", new RouteValueDictionary { [nameof(Model)] = Model }),
+                                UrlDelete = new DataUrl("CatalogSyncDelete", "CatalogSync", null),
                                 Length = Model.PageSize,
                                 LengthMenu = Model.AvailablePageSizes,
                                 ColumnCollection = new List<ColumnProperty>

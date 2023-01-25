@@ -92,6 +92,8 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Factories
 
                 if (!filterValues.Contains(revenewType.Value))
                     items.Add(new SelectListItem { Value = revenewType.Key.Replace(Default.GenericRevenewCatalog, string.Empty), Text = revenewType.Value });
+                else
+                    items.Add(new SelectListItem { Value = revenewType.Key.Replace(Default.GenericRevenewCatalog, string.Empty), Text = revenewType.Value, Selected = true });
             }
 
             //insert special item for the default value
@@ -124,6 +126,9 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Factories
 
                 if (!filterValues.Contains(category.Value))
                     items.Add(new SelectListItem { Value = $"{category.Id}", Text = category.Value });
+                else
+                    items.Add(new SelectListItem { Value = $"{category.Id}", Text = category.Value, Selected = true });
+
             }
 
             //insert special item for the default value
@@ -156,12 +161,14 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Factories
 
                 if (!filterValues.Contains(brand.Value))
                     items.Add(new SelectListItem { Value = $"{brand.Id}", Text = brand.Value });
+                else
+                    items.Add(new SelectListItem { Value = $"{brand.Id}", Text = brand.Value, Selected = true });
             }
 
             //insert special item for the default value
             await PrepareDefaultItemAsync(items, withSpecialDefaultItem, defaultItemText);
         }
-        
+
         /// <summary>
         /// Prepare product types
         /// </summary>

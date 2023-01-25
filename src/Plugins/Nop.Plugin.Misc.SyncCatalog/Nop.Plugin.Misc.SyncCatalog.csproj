@@ -22,6 +22,7 @@
     <None Remove="Areas\Admin\Views\CatalogSync\CatalogProductCreatePopup.cshtml" />
     <None Remove="Areas\Admin\Views\CatalogSync\ListProducts.cshtml" />
     <None Remove="Areas\Admin\Views\CatalogSync\RevenewCreatePopup.cshtml" />
+    <None Remove="Areas\Admin\Views\CatalogSync\RevenewEditPopup.cshtml" />
     <None Remove="Areas\Admin\Views\Sync\Configure.cshtml" />
     <None Remove="Areas\Admin\Views\Sync\List.cshtml" />
     <None Remove="Areas\Admin\Views\Sync\RevenewMapping.cshtml" />
@@ -62,6 +63,11 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
     <Content Include="Areas\Admin\Views\CatalogSync\CatalogProductCreatePopup.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="Areas\Admin\Views\CatalogSync\RevenewEditPopup.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>

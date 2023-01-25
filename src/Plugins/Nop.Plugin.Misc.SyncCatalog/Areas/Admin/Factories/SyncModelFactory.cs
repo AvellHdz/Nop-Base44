@@ -113,6 +113,8 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Factories
             model.QueryRevenewStoreCatalog = syncCatlogSettings.QueryRevenewStoreCatalog;
             model.QueryRevenewStoreMappingCatalog = syncCatlogSettings.QueryRevenewStoreMappingCatalog;
             model.MutationCreateRevenewStoreMappingCatalog = syncCatlogSettings.MutationCreateRevenewStoreMappingCatalog;
+            model.MutationUpdateRevenewStoreMappingCatalog = syncCatlogSettings.MutationUpdateRevenewStoreMappingCatalog;
+            model.MutationDeleteRevenewStoreMappingCatalog = syncCatlogSettings.MutationDeleteRevenewStoreMappingCatalog;
             model.QueryProductStoreMappingCatalog = syncCatlogSettings.QueryProductStoreMappingCatalog;
             model.MutationCreateProductStoreMappingCatalog = syncCatlogSettings.MutationCreateProductStoreMappingCatalog;
 
@@ -130,7 +132,13 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Factories
             List<string> filterCategories = default,
             List<string> filterBrands = default)
         {
+            var store = await _storeContext.GetCurrentStoreAsync();
+            var generics = await _genericAttributeService.GetAttributesForEntityAsync(store.Id, store.GetType().Name);
+
             model ??= new();
+            filterRevenews ??= new();
+            filterCategories ??= new();
+            filterBrands ??= new();
 
             //prepare available revenews
             await _basePluginAdminModelFactory.PrepareRevenewTypesAsync(model.AvailableRevenews, withSpecialDefaultItem: false, filterValues: filterRevenews);
@@ -140,6 +148,14 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Factories
 
             //prepare available revenews
             await _basePluginAdminModelFactory.PrepareBrandTypesAsync(model.AvailableBrand, withSpecialDefaultItem: false, filterValues: filterBrands);
+
+            var categorySelected = generics.Where(l => l.Key.Contains(Default.GenericCategoryCatalog)).FirstOrDefault(l => filterCategories.Contains(l.Value))?.Id ?? default;
+            var brandSelected = generics.Where(l => l.Key.Contains(Default.GenericBrandCatalog)).FirstOrDefault(l => filterBrands.Contains(l.Value))?.Id ?? default;
+            var revenewSelected = generics.Where(l => l.Key.Contains(Default.GenericRevenewCatalog)).FirstOrDefault(l => filterRevenews.Contains(l.Value))?.Id ?? default;
+
+            model.SelectedCategoriesIds.Add(categorySelected);
+            model.SelectedBrandsIds.Add(brandSelected);
+            model.SelectedRevenew = revenewSelected;
 
             return model;
         }
@@ -209,8 +225,8 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Factories
 
                         var nameType = name switch
                         {
-                            "Categoria" => categories.FirstOrDefault(x => x.Key.Replace(Default.GenericCategoryCatalog, string.Empty) == $"{mapping.externalId}").Value,
-                            "Marca" => brands.FirstOrDefault(x => x.Key.Replace(Default.GenericBrandCatalog, string.Empty) == $"{mapping.externalId}").Value,
+                            "Categoria" => categories.FirstOrDefault(x => x.Key.Replace(Default.GenericCategoryCatalog, string.Empty) == $"{mapping.externalId}")?.Value ?? string.Empty,
+                            "Marca" => brands.FirstOrDefault(x => x.Key.Replace(Default.GenericBrandCatalog, string.Empty) == $"{mapping.externalId}")?.Value ?? string.Empty,
                             _ => string.Empty,
                         };
 
@@ -294,8 +310,8 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Factories
 
                     var nameType = name switch
                     {
-                        "Categoria" => categories.FirstOrDefault(x => x.Key.Replace(Default.GenericCategoryCatalog, string.Empty) == $"{mapping.externalId}").Value,
-                        "Marca" => brands.FirstOrDefault(x => x.Key.Replace(Default.GenericBrandCatalog, string.Empty) == $"{mapping.externalId}").Value,
+                        "Categoria" => categories.FirstOrDefault(x => x.Key.Replace(Default.GenericCategoryCatalog, string.Empty) == $"{mapping.externalId}")?.Value ?? string.Empty,
+                        "Marca" => brands.FirstOrDefault(x => x.Key.Replace(Default.GenericBrandCatalog, string.Empty) == $"{mapping.externalId}")?.Value ?? string.Empty,
                         _ => string.Empty,
                     };
 
@@ -304,6 +320,7 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Factories
                     catalogModels.Add(new()
                     {
                         IdRevenew = idRevenew ?? string.Empty,
+                        IdMapping = mapping.id,
                         RevenewName = name ?? string.Empty,
                         Priority = revenew.priority,
                         NameType = nameType,

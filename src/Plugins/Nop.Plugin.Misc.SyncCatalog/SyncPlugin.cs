@@ -12,7 +12,6 @@ using Nop.Services.Customers;
 using Nop.Services.Localization;
 using Nop.Services.Plugins;
 using Nop.Services.Security;
-using Nop.Web.Framework;
 using Nop.Web.Framework.Menu;
 
 namespace Nop.Plugin.Misc.SyncCatalog
@@ -90,12 +89,12 @@ namespace Nop.Plugin.Misc.SyncCatalog
                 [$"{Default.RESOURCE_PREFIX}.Admin.Sync.Catalog.Revenew.AddNew"] = "Agregar nuevo revenew",
                 [$"{Default.RESOURCE_PREFIX}.Sync.Catalog.Product.SubMenu.Title"] = "Productos de Ordenes a Sync",
                 [$"{Default.RESOURCE_PREFIX}.Admin.Sync.Catalog.Product.AddNew"] = "Agregar nueva relación",
+                [$"{Default.RESOURCE_PREFIX}.Admin.Sync.Catalog.Product.Edit"] = "Editar relación",
                 [Default.IDENTIFIER_PRODUCT_MAPPING] = "Producto en Ordenes a Sincronizar",
                 [Default.NAME_PRODUCT_MAPPING] = "Producto",
                 [Default.EXTERNAL_PRODUCT_MAPPING] = "Product Code",
                 [Default.TITLE_ADD_NEW_PRODUCT_MAPPGIN] = "Agregar relacion de productos",
                 [Default.TITLE_ADD_NEW_REVENEW_MAPPGIN] = "Agregar relacion de ganancia por tipo",
-
                 [Default.RESOURCE_URL_SERVICES] = "API Services - URL",
                 [Default.RESOURCE_USER_NAME] = "Usuario",
                 [Default.RESOURCE_PASSWORD] = "Contraseña",

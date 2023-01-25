@@ -199,6 +199,84 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Services
 
             #endregion
         }
+        
+        /// <summary>
+        /// Update mapping with API - Sync Catalog
+        /// </summary>
+        /// <param name="login"></param>
+        /// <param name="setting"></param>
+        /// <returns></returns>
+        public async Task UpdateStoreMappingAsync(RevenewStoreCatalog storeCatalog, SettingModel setting)
+        {
+            #region Data Sync
+
+            try
+            {
+                if (!string.IsNullOrEmpty(setting.UrlService)
+                    && !string.IsNullOrEmpty(setting.QueryAuthenticate))
+                {
+                    var detailt = "externalID:" + '"' + "{0}" + '"' + ", makeUp:{1}";
+
+                    var mappings = string.Empty;
+                    foreach (var mapping in storeCatalog.RevenewMappingCatalogs)
+                        mappings = mappings + "{" + string.Format(detailt, mapping.ExternalID, mapping.MakeUp) + "},";
+                   
+                    var mutarionAuthRequest = setting.MutationUpdateRevenewStoreMappingCatalog
+                        .Replace(LiteralSync.REVENEW_STORED_CODE_NAME, $"{storeCatalog.RevenewStored}")
+                        .Replace(LiteralSync.STORE_ID_CODE_NAME, $"{storeCatalog.StoreId}")
+                        .Replace(LiteralSync.PRIORITY_CODE_NAME, $"{storeCatalog.Priroty}")
+                        .Replace(LiteralSync.REVENEW_TYPE_CODE_NAME, $"{storeCatalog.RevenewTypeId}")
+                        .Replace(LiteralSync.REVENEW_MAPPING_CATALOG_CODE_NAME, mappings.TrimEnd(','));
+
+                    //mutation{ updateRevenewStoreMapping(revenewUpdate:{ revenewStored: revenewStoredCode,storeId: storeIdCode,revenewTypeId: revenewTypeCode,priroty: priorityCode,revenewMappingCatalogs:[{ externalID: "externalIDCode",makeUp: makeUpCode}]})}
+                    await MutationLicenseService.ExceuteMutationAsyn<UpdateRevenewStore>(mutarionAuthRequest);
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            #endregion
+        }
+        
+        /// <summary>
+        /// Update mapping with API - Sync Catalog
+        /// </summary>
+        /// <param name="login"></param>
+        /// <param name="setting"></param>
+        /// <returns></returns>
+        public async Task DeleteStoreMappingAsync(RevenewStoreCatalog storeCatalog, SettingModel setting)
+        {
+            #region Data Sync
+
+            try
+            {
+                if (!string.IsNullOrEmpty(setting.UrlService)
+                    && !string.IsNullOrEmpty(setting.QueryAuthenticate))
+                {
+                    var detailt = "externalID:" + '"' + "{0}" + '"' + ", makeUp:{1}";
+
+                    var mappings = string.Empty;
+                    foreach (var mapping in storeCatalog.RevenewMappingCatalogs)
+                        mappings = mappings + "{" + string.Format(detailt, mapping.ExternalID, mapping.MakeUp) + "},";
+                   
+                    var mutarionAuthRequest = setting.MutationDeleteRevenewStoreMappingCatalog
+                        .Replace(LiteralSync.REVENEW_STORED_CODE_NAME, $"{storeCatalog.RevenewStored}")
+                        .Replace(LiteralSync.STORE_ID_CODE_NAME, $"{storeCatalog.StoreId}")
+                        .Replace(LiteralSync.PRIORITY_CODE_NAME, $"{storeCatalog.Priroty}")
+                        .Replace(LiteralSync.REVENEW_TYPE_CODE_NAME, $"{storeCatalog.RevenewTypeId}")
+                        .Replace(LiteralSync.REVENEW_MAPPING_CATALOG_CODE_NAME, mappings.TrimEnd(','));
+
+                    //mutation{ updateRevenewStoreMapping(revenewUpdate:{ revenewStored: revenewStoredCode,storeId: storeIdCode,revenewTypeId: revenewTypeCode,priroty: priorityCode,revenewMappingCatalogs:[{ externalID: "externalIDCode",makeUp: makeUpCode}]})}
+                    await MutationLicenseService.ExceuteMutationAsyn<UpdateRevenewStore>(mutarionAuthRequest);
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            #endregion
+        }
 
         /// <summary>
         /// Product Catalog - Sync Catalog
