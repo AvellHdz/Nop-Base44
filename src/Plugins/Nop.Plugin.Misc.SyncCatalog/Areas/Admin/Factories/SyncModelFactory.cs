@@ -213,11 +213,11 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Factories
 
                         var revenewsTypes = generics.Where(l => l.Key.Contains(Default.GenericRevenewCatalog));
 
-                        var idRevenew = revenewsTypes.FirstOrDefault(x => x.Key.Replace(Default.GenericRevenewCatalog, string.Empty) == $"{revenew.id}")
-                            .Key.Replace(Default.GenericRevenewCatalog, string.Empty);
+                        var idRevenew = (revenewsTypes.FirstOrDefault(x => x.Key.Replace(Default.GenericRevenewCatalog, string.Empty) == $"{revenew.id}")
+                            ?.Key?.Replace(Default.GenericRevenewCatalog, string.Empty)) ?? string.Empty;
 
                         var name = revenewsTypes.FirstOrDefault(x => x.Key.Replace(Default.GenericRevenewCatalog, string.Empty) == $"{revenew.id}")
-                            .Value;
+                            ?.Value ?? string.Empty;
 
                         var categories = generics.Where(l => l.Key.Contains(Default.GenericCategoryCatalog));
 

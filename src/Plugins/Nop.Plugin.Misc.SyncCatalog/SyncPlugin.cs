@@ -165,6 +165,87 @@ namespace Nop.Plugin.Misc.SyncCatalog
             await base.InstallAsync();
         }
 
+
+        /// <summary>
+        /// Uninstall plugin
+        /// </summary>
+        /// <returns>A task that represents the asynchronous operation</returns>
+        public override async Task UninstallAsync()
+        {
+
+            //remove locales
+            await _localizationService.DeleteLocaleResourcesAsync(new List<string>
+            {
+                $"{Default.RESOURCE_PREFIX}.TitleInfo",
+                $"{Default.RESOURCE_PREFIX}.Sync.Menu.Title",
+                $"{Default.RESOURCE_PREFIX}.Sync.Setting.SubMenu.Title",
+                $"{Default.RESOURCE_PREFIX}.Admin.Common.Sync.Login.Test",
+                $"{Default.RESOURCE_PREFIX}.Admin.Sync.Fields.UrlService.Required",
+                $"{Default.RESOURCE_PREFIX}.Admin.Sync.Fields.UserName.Required",
+                $"{Default.RESOURCE_PREFIX}.Admin.Sync.Fields.Password.Required" ,
+                $"{Default.RESOURCE_PREFIX}.Admin.Sync.Catalog",
+                $"{Default.RESOURCE_PREFIX}.Admin.Sync.Catalog.Revenew" ,
+                $"{Default.RESOURCE_PREFIX}.Admin.Sync.Catalog.Revenew.Filed.RevenewId",
+                $"{Default.RESOURCE_PREFIX}.Admin.Sync.Catalog.Revenew.Filed.Name",
+                $"{Default.RESOURCE_PREFIX}.Admin.Sync.Catalog.Revenew.Filed.Priority" ,
+                $"{Default.RESOURCE_PREFIX}.Admin.Sync.Catalog.Revenew.Filed.NameType" ,
+                $"{Default.RESOURCE_PREFIX}.Admin.Sync.Catalog.Revenew.Filed.Makeup" ,
+                $"{Default.RESOURCE_PREFIX}.Sync.Catalog.SubMenu.Title" ,
+                $"{Default.RESOURCE_PREFIX}.Admin.Sync.Catalog.Revenew.AddNew",
+                $"{Default.RESOURCE_PREFIX}.Sync.Catalog.Product.SubMenu.Title",
+                $"{Default.RESOURCE_PREFIX}.Admin.Sync.Catalog.Product.AddNew",
+                $"{Default.RESOURCE_PREFIX}.Admin.Sync.Catalog.Product.Edit",
+                Default.IDENTIFIER_PRODUCT_MAPPING,
+                Default.NAME_PRODUCT_MAPPING,
+                Default.EXTERNAL_PRODUCT_MAPPING,
+                Default.TITLE_ADD_NEW_PRODUCT_MAPPGIN,
+                Default.TITLE_ADD_NEW_REVENEW_MAPPGIN,
+                Default.RESOURCE_URL_SERVICES,
+                Default.RESOURCE_USER_NAME,
+                Default.RESOURCE_PASSWORD,
+                Default.RESOURCE_STORE_ID,
+                Default.RESOURCE_QUERY_AUTHENTICATE,
+                Default.RESOURCE_QUERY_REVENEW_CATALOG,
+                Default.RESOURCE_QUERY_CATEGORY_CATALOG,
+                Default.RESOURCE_QUERY_BRAND_CATALOG,
+                Default.RESOURCE_QUERY_REVENEW_STORE_CATALOG,
+                Default.RESOURCE_QUERY_REVENEW_STORE_MAPPING_CATALOG,
+                Default.RESOURCE_MUTATION_CREATE_REVENEW_STORE_MAPPING_CATALOG,
+                Default.RESOURCE_QUERY_PRODUCT_STORE_MAPPING_CATALOG ,
+                Default.RESOURCE_MUTATION_CREATE_PRODUCT_STORE_MAPPING_CATALOG
+            });
+
+            // remove setting
+            var storeScope = await _storeContext.GetActiveStoreScopeConfigurationAsync();
+            var syncSetting = await _settingService.LoadSettingAsync<SettingModel>(storeScope);
+
+            await _settingService.DeleteSettingAsync(syncSetting, settings => settings.QueryAuthenticate);
+            await _settingService.DeleteSettingAsync(syncSetting, settings => settings.QueryRevenewCatalog);
+            await _settingService.DeleteSettingAsync(syncSetting, settings => settings.QueryCategoryCatalog);
+            await _settingService.DeleteSettingAsync(syncSetting, settings => settings.QueryBrandCatalog);
+            await _settingService.DeleteSettingAsync(syncSetting, settings => settings.QueryRevenewStoreCatalog);
+            await _settingService.DeleteSettingAsync(syncSetting, settings => settings.QueryRevenewStoreMappingCatalog);
+            await _settingService.DeleteSettingAsync(syncSetting, settings => settings.MutationCreateRevenewStoreMappingCatalog);
+            await _settingService.DeleteSettingAsync(syncSetting, settings => settings.QueryProductStoreMappingCatalog);
+            await _settingService.DeleteSettingAsync(syncSetting, settings => settings.MutationCreateProductStoreMappingCatalog);
+
+            // remove permission record
+            var permissionRecord = (await _permissionService.GetAllPermissionRecordsAsync()).Where(x => x.Name == Default.PermissionManagerName);
+
+            var customerRole = (await _customerService.GetAllCustomerRolesAsync()).Where(cr => cr.Name == "Administrators").FirstOrDefault();
+
+            foreach (var record in permissionRecord)
+            {
+                if (customerRole != null)
+                {
+                    var mappings = await _permissionService.GetMappingByPermissionRecordIdAsync(record.Id);
+
+                    foreach(var mapping in mappings)
+                        await _permissionService.DeletePermissionRecordCustomerRoleMappingAsync(mapping.Id, customerRole.Id);
+                }
+                await _permissionRecordRepository.DeleteAsync(record);
+            }
+        }
         #endregion
 
         #region AdminMenu
