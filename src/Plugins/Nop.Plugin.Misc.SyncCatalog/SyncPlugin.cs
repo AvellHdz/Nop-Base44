@@ -58,7 +58,7 @@ namespace Nop.Plugin.Misc.SyncCatalog
         /// </summary>
         public override string GetConfigurationPageUrl()
         {
-            return $"{_webHelper.GetStoreLocation()}Admin/Syn/Configure";
+            return $"{_webHelper.GetStoreLocation()}Admin/Sync/Configure";
         }
 
         /// <summary>
