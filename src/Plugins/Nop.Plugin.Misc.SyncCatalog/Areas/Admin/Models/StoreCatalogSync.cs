@@ -3,14 +3,15 @@ using Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Models.Sync;
 
 namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Models
 {
-    public class StoreCatalogSync
+    public record StoreCatalog
     {
-        public StoreCatalogSync()
+        public StoreCatalog()
         {
-            Category = new();
-            Product = new();
+            Categories = new();
+            Products = new();
         }
-        public List<Category> Category { get; set; }
-        public List<ProductSync> Product { get; set; }
+        public List<CategorySync> Categories { get; set; }
+        public List<ProductSync> Products { get; set; }
+
     }
 }

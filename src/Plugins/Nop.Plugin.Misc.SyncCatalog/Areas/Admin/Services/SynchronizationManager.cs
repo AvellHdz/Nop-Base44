@@ -51,7 +51,7 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Services
 
             var model = await _syncService.GetStoreCatalog(syncSetting);
 
-            foreach(var category in model.Category)
+            foreach(var category in model.Categories)
             {
                 var record = await _categoryService.GetAllCategoriesAsync();
 
@@ -67,7 +67,7 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Services
                 }
             }
 
-            foreach (var product in model.Product)
+            foreach (var product in model.Products)
             {
                 var record = (await _productService.SearchProductsAsync())
                     .Select(c=> c);

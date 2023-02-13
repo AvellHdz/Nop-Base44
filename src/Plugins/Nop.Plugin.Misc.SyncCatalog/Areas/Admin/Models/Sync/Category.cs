@@ -1,77 +1,57 @@
 ﻿using System;
-using Newtonsoft.Json;
 
 namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Models.Sync
 {
-    public class Category
+    public class CategorySync
     {
-        public string Name { get; set; }
-        public string Description { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
 
-        [JsonProperty("category_template_id")]
-        public int CategoryTemplateId { get; set; } = 0;
+        public int CategoryTemplateId { get; set; } = default;
 
-        [JsonProperty("meta_keywords")]
-        public string MetaKeywords { get; set; }
+        public string MetaKeywords { get; set; } = string.Empty;
 
-        [JsonProperty("meta_description")]
-        public string MetaDescription { get; set; }
+        public string MetaDescription { get; set; } = string.Empty;
 
-        [JsonProperty("meta_title")]
-        public string MetaTitle { get; set; }
+        public string MetaTitle { get; set; } = string.Empty;
 
-        [JsonProperty("parent_category_id")]
-        public int ParentCategoryId { get; set; } = 0;
+        public int ParentCategoryId { get; set; } = default;
 
-        [JsonProperty("picture_id")]
-        public int PictureId { get; set; } = 0;
+        public int PictureId { get; set; } = default;
 
-        [JsonProperty("page_size")]
-        public int PageSize { get; set; } = 0;
+        public int PageSize { get; set; } = default;
 
-        [JsonProperty("allow_customers_to_select_page_size")]
         public bool AllowCustomersToSelectPageSize { get; set; }
 
-        [JsonProperty("page_size_options")]
-        public string PageSizeOptions { get; set; }
+        public string PageSizeOptions { get; set; } = string.Empty;
 
-        [JsonProperty("show_on_homepage")]
-        public bool ShowOnHomepage { get; set; } = false;
+        public bool ShowOnHomepage { get; set; }
 
-        [JsonProperty("include_in_top_menu")]
-        public bool IncludeInTopMenu { get; set; } = false;
+        public bool IncludeInTopMenu { get; set; }
 
-        [JsonProperty("subject_to_acl")]
-        public bool SubjectToAcl { get; set; } = true;
+        public bool SubjectToAcl { get; set; }
 
-        [JsonProperty("limited_to_stores")]
-        public bool LimitedToStores { get; set; } = false;
+        public bool LimitedToStores { get; set; }
 
-        public bool Published { get; set; } = true;
+        public bool Published { get; set; }
 
-        public bool Deleted { get; set; } = false;
+        public bool Deleted { get; set; }
 
-        [JsonProperty("display_order")]
-        public int DisplayOrder { get; set; } = 0;
 
-        [JsonProperty("created_on_utc")]
-        public DateTime CreatedOnUtc { get; set; } = DateTime.UtcNow;
+        public int DisplayOrder { get; set; } = default;
 
-        [JsonProperty("updated_on_utc")]
-        public DateTime UpdatedOnUtc { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedOnUtc { get; set; }
 
-        [JsonProperty("price_range_filtering")]
-        public bool PriceRangeFiltering { get; set; } = true;
+        public DateTime UpdatedOnUtc { get; set; }
 
-        [JsonProperty("price_from")]
-        public int PriceFrom { get; set; } = 0;
+        public bool PriceRangeFiltering { get; set; }
 
-        [JsonProperty("price_to")]
-        public int PriceTo { get; set; } = 0;
+        public int PriceFrom { get; set; } = default;
 
-        [JsonProperty("manually_price_range")]
+        public int PriceTo { get; set; } = default;
+
         public bool ManuallyPriceRange { get; set; }
 
-        public int Id { get; set; } = 0;
+        public int Id { get; set; } = default;
     }
 }

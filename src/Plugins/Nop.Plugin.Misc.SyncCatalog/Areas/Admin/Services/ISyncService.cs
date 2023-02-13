@@ -102,7 +102,7 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Services
         /// <param name="login"></param>
         /// <param name="setting"></param>
         /// <returns></returns>
-        Task<StoreCatalogSync> GetStoreCatalog(SettingModel setting);
+        Task<StoreCatalog> GetStoreCatalog(SettingModel setting);
 
     }
 }

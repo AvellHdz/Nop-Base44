@@ -333,7 +333,7 @@
         /// <summary>
         /// Catalog Store
         /// </summary>
-        public static string DefaultSettingQueryCatalogStore = "query{catalogStore(storeId: storeCode){}}";
+        public static string DefaultSettingQueryCatalogStore = "query{storeCatalog (storeId: storeCode){categories{name,description},products{name,short_description,full_description,gtin,price,product_cost}}}";
 
         #endregion
     }

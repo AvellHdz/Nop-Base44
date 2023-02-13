@@ -348,7 +348,7 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Services
         /// <param name="login"></param>
         /// <param name="setting"></param>
         /// <returns></returns>
-        public async Task<StoreCatalogSync> GetStoreCatalog(SettingModel setting)
+        public async Task<StoreCatalog> GetStoreCatalog(SettingModel setting)
         {
             #region Data Sync
 
@@ -360,7 +360,7 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Services
                 var queryRequest = setting.QueryCatalogStore
                     .Replace(LiteralSync.STORE_ID_CODE, $"{setting.StoreId}");
 
-                return await Query.ExceuteQueryAsync<StoreCatalogSync>(queryRequest, auth: false) ?? new();
+                return await Query.ExceuteQueryAsync<StoreCatalog>(queryRequest, auth: false) ?? new();
             }
 
             #endregion
