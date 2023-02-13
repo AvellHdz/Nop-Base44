@@ -107,7 +107,8 @@ namespace Nop.Plugin.Misc.SyncCatalog
                 [Default.RESOURCE_QUERY_REVENEW_STORE_MAPPING_CATALOG] = "Query - Mapeo Catálogos",
                 [Default.RESOURCE_MUTATION_CREATE_REVENEW_STORE_MAPPING_CATALOG] = "Mutation - Creación Mapeo de Tienda",
                 [Default.RESOURCE_QUERY_PRODUCT_STORE_MAPPING_CATALOG] = "Query - Mapeo de Productos",
-                [Default.RESOURCE_MUTATION_CREATE_PRODUCT_STORE_MAPPING_CATALOG] = "Mutation - Creación Mapeo de Productos"
+                [Default.RESOURCE_MUTATION_CREATE_PRODUCT_STORE_MAPPING_CATALOG] = "Mutation - Creación Mapeo de Productos",
+                [Default.RESOURCE_QUERY_CATALOG_STORE] = "Query - Sincronización Tienda"
             });
 
             // Settings Default
@@ -119,6 +120,7 @@ namespace Nop.Plugin.Misc.SyncCatalog
             syncSetting.QueryCategoryCatalog = Default.DefaultSettingQueryCategoryCatalog;
             syncSetting.QueryBrandCatalog = Default.DefaultSettingQueryBrandCatalog;
             syncSetting.QueryRevenewStoreCatalog = Default.DefaultSettingQueryRevenewStoreCatalog;
+            syncSetting.QueryCatalogStore = Default.DefaultSettingQueryCatalogStore;
             syncSetting.QueryRevenewStoreMappingCatalog = Default.DefaultSettingQueryRevenewStoreMappingCatalog;
             syncSetting.QueryProductStoreMappingCatalog = Default.DefaultSettingQueryProductStoreMappingCatalog;
             syncSetting.MutationCreateRevenewStoreMappingCatalog = Default.DefaultSettingMutationCreateRevenewStoreMappingCatalog;
@@ -135,6 +137,7 @@ namespace Nop.Plugin.Misc.SyncCatalog
             await _settingService.SaveSettingAsync(syncSetting, settings => settings.MutationCreateRevenewStoreMappingCatalog, clearCache: false);
             await _settingService.SaveSettingAsync(syncSetting, settings => settings.QueryProductStoreMappingCatalog, clearCache: false);
             await _settingService.SaveSettingAsync(syncSetting, settings => settings.MutationCreateProductStoreMappingCatalog, clearCache: false);
+            await _settingService.SaveSettingAsync(syncSetting, settings => settings.QueryCatalogStore, clearCache: false);
 
             // Add new permission record
             var catalogManageSystem = new PermissionRecord

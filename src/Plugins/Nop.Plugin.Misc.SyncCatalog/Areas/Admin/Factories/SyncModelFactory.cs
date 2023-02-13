@@ -117,6 +117,7 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Factories
             model.MutationDeleteRevenewStoreMappingCatalog = syncCatlogSettings.MutationDeleteRevenewStoreMappingCatalog;
             model.QueryProductStoreMappingCatalog = syncCatlogSettings.QueryProductStoreMappingCatalog;
             model.MutationCreateProductStoreMappingCatalog = syncCatlogSettings.MutationCreateProductStoreMappingCatalog;
+            model.QueryCatalogStore = syncCatlogSettings.QueryCatalogStore;
 
             return model;
         }

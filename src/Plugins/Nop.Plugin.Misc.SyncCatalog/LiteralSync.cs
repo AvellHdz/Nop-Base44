@@ -1,6 +1,4 @@
-﻿using Nop.Data.Migrations.Indexes;
-
-namespace Nop.Plugin.Misc.SyncCatalog
+﻿namespace Nop.Plugin.Misc.SyncCatalog
 {
     public class LiteralSync
     {
@@ -95,8 +93,27 @@ namespace Nop.Plugin.Misc.SyncCatalog
         /// <summary>
         /// Revenew Mapping Catalog Code Name
         /// </summary>
-        public const string PRODUCT_STORES_CODE = "productStoresCode"; 
-        
+        public const string PRODUCT_STORES_CODE = "productStoresCode";
+
+        #endregion
+
+        #region Task - Get Invoices
+
+        /// <summary>
+        /// Gets a type of the synchronization schedule task
+        /// </summary>
+        public static string SynchronizationTask => "Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Services.SynchronizationTask";
+
+        /// <summary>
+        /// Gets a default synchronization period in hours
+        /// </summary>
+        public static int DefaultSynchronizationPeriod => 1;
+
+        /// <summary>
+        /// Gets a name of the synchronization schedule task
+        /// </summary>
+        public static string SynchronizationTaskName => "Synchronization Store";
+
         #endregion
     }
 }

@@ -96,6 +96,12 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Models
         /// </summary>
         [NopResourceDisplayName(Default.RESOURCE_MUTATION_CREATE_PRODUCT_STORE_MAPPING_CATALOG)]
         public string MutationCreateProductStoreMappingCatalog { get; set; }
+        
+        /// <summary>
+        /// Mutation Product Store Mapping Catalog - Sync Services
+        /// </summary>
+        [NopResourceDisplayName(Default.RESOURCE_QUERY_CATALOG_STORE)]
+        public string QueryCatalogStore { get; set; }
 
         /// <summary>
         /// Hide General Block

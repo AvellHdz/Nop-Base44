@@ -22,6 +22,7 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Infrastructure
         {
             #region Services
 
+            services.AddScoped<SynchronizationManager>();
             services.AddScoped<ISyncService, SyncService>();
 
             #endregion

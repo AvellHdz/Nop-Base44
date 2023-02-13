@@ -2,7 +2,7 @@
   "Group": "Misc",
   "FriendlyName": "SyncCatalog",
   "SystemName": "Misc.SyncCatalog",
-  "Version": "1.0",
+  "Version": "1.1",
   "SupportedVersions": [ "4.40" ],
   "Author": "Abel Hernandez",
   "DisplayOrder": 1,

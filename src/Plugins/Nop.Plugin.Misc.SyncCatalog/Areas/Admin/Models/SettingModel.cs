@@ -32,11 +32,15 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Models
         /// </summary>
         public string QueryBrandCatalog { get; set; }
 
-
         /// <summary>
         /// Query Revenew Store Catalog - Sync Services
         /// </summary>
-        public string QueryRevenewStoreCatalog { get; set; }
+        public string QueryRevenewStoreCatalog { get; set; } 
+        
+        /// <summary>
+        /// Query Catalog Store Sync Services
+        /// </summary>
+        public string QueryCatalogStore { get; set; }
 
         /// <summary>
         /// Query Revenew Store Mapping Catalog - Sync Services

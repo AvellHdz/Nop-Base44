@@ -341,6 +341,32 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Services
             #endregion
         }
 
+
+        /// <summary>
+        /// Catalog Catalog- Sync Catalog
+        /// </summary>
+        /// <param name="login"></param>
+        /// <param name="setting"></param>
+        /// <returns></returns>
+        public async Task<StoreCatalogSync> GetStoreCatalog(SettingModel setting)
+        {
+            #region Data Sync
+
+            if (!string.IsNullOrEmpty(setting.UrlService)
+                && !string.IsNullOrEmpty(setting.QueryAuthenticate)
+                && setting.StoreId > 0)
+            {
+
+                var queryRequest = setting.QueryCatalogStore
+                    .Replace(LiteralSync.STORE_ID_CODE, $"{setting.StoreId}");
+
+                return await Query.ExceuteQueryAsync<StoreCatalogSync>(queryRequest, auth: false) ?? new();
+            }
+
+            #endregion
+
+            return new();
+        }
         #endregion
     }
 }

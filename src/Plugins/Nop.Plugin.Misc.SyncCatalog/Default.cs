@@ -147,6 +147,11 @@
         /// Mutation Create Product Store Mapping Catalog
         /// </summary>
         public const string RESOURCE_MUTATION_CREATE_PRODUCT_STORE_MAPPING_CATALOG = "Plugin.Misc.SyncCatalog.Admin.Common.Sync.MutationCreateProductStoreMappingCatalog";
+
+        /// <summary>
+        /// Query Catalog Store
+        /// </summary>
+        public const string RESOURCE_QUERY_CATALOG_STORE = "Plugin.Misc.SyncCatalog.Admin.Common.Sync.QueryCatalogStore";
         
         /// <summary>
         /// Mutation Update Product Store Mapping Catalog
@@ -324,6 +329,11 @@
         /// Create Product Store Mapping
         /// </summary>
         public static string DefaultSettingMutationCreateProductStoreMappingCatalog = "mutation{createProductMappingStore(productStores:[{id:1,storeId:1,productId:1}])}";
+
+        /// <summary>
+        /// Catalog Store
+        /// </summary>
+        public static string DefaultSettingQueryCatalogStore = "query{catalogStore(storeId: storeCode){}}";
 
         #endregion
     }
