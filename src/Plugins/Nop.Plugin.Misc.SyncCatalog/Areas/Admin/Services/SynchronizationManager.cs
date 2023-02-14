@@ -51,23 +51,23 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Services
 
             var model = await _syncService.GetStoreCatalog(syncSetting);
 
-            foreach(var category in model.Categories)
+            foreach(var category in model.storeCatalog.categories)
             {
                 var record = await _categoryService.GetAllCategoriesAsync();
 
-                if(!record.Any(x=> x.Name == category.Name))
+                if(!record.Any(x=> x.Name == category.name))
                 {
                     var catalog = new Category()
                     {
-                        Name = category.Name,
-                        Description = category.Description
+                        Name = category.name,
+                        Description = category.description
                     };
 
                     await _categoryService.InsertCategoryAsync(catalog);
                 }
             }
 
-            foreach (var product in model.Products)
+            foreach (var product in model.storeCatalog.products)
             {
                 var record = (await _productService.SearchProductsAsync())
                     .Select(c=> c);

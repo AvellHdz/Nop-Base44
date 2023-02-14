@@ -13,7 +13,7 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Infrastructure.Mapper
         {
             #region Catalog
 
-            CreateMap<Category, Sync.Category>()
+            CreateMap<Category, Sync.CategorySync>()
                  .ReverseMap();  
             
             CreateMap<Product, Sync.ProductSync>()
