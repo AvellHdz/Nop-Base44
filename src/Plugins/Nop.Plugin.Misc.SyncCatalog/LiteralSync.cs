@@ -34,6 +34,16 @@
         /// Request error catalog
         /// </summary>
         public const string NOT_SUCCESS_CATEGORY_CATALOG = "No se encontro catálogo de categoría para sincronizar.";
+        
+        /// <summary>
+        /// Request error catalog
+        /// </summary>
+        public const string NOT_SUCCESS_SUB_CATEGORY_CATALOG = "No se encontro catálogo de sub categoría para sincronizar.";
+        
+        /// <summary>
+        /// Request error catalog
+        /// </summary>
+        public const string NOT_SUCCESS_GROUPS_CATALOG = "No se encontro catálogo de familias para sincronizar.";
 
         /// <summary>
         /// Request email name

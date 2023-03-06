@@ -25,6 +25,16 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Models
         /// Query Category Catalog - Sync Services
         /// </summary>
         public string QueryCategoryCatalog { get; set; }
+        
+        /// <summary>
+        /// Query Category Catalog - Sync Services
+        /// </summary>
+        public string QuerySubCategoryCatalog { get; set; }
+        
+        /// <summary>
+        /// Query Groups Catalog - Sync Services
+        /// </summary>
+        public string QueryGroupsCatalog { get; set; }
 
 
         /// <summary>

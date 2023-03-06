@@ -118,6 +118,18 @@
         /// </summary>
         public const string RESOURCE_QUERY_CATEGORY_CATALOG = "Plugin.Misc.SyncCatalog.Admin.Common.Sync.QueryCategoryCatalog";
 
+
+        /// <summary>
+        /// Query Revenew Catalog
+        /// </summary>
+        public const string RESOURCE_QUERY_SUB_CATEGORY_CATALOG = "Plugin.Misc.SyncCatalog.Admin.Common.Sync.QuerySubCategoryCatalog";
+
+
+        /// <summary>
+        /// Query Groups Catalog
+        /// </summary>
+        public const string RESOURCE_QUERY_GROUPS_CATALOG = "Plugin.Misc.SyncCatalog.Admin.Common.Sync.QueryGroupsCatalog";
+
         /// <summary>
         /// Query Brand Catalog
         /// </summary>
@@ -269,7 +281,17 @@
         /// <summary>
         /// Catalog catalog generic name
         /// </summary>
+        public static string GenericSubCategoryCatalog = "SubCategorySyncCatalog-";
+
+        /// <summary>
+        /// Catalog catalog generic name
+        /// </summary>
         public static string GenericBrandCatalog = "BrandSyncCatalog-";
+        
+        /// <summary>
+        /// Catalog groups generic name
+        /// </summary>
+        public static string GenericGroupsCatalog = "GroupsSyncCatalog-";
 
         #endregion
 
@@ -289,11 +311,21 @@
         /// Category Catelog
         /// </summary>
         public static string DefaultSettingQueryCategoryCatalog = "query{category(token: " + '"' + "tokenCode" + '"' + "){externalId,name,distributorId}}";
+        
+        /// <summary>
+        /// Category Catelog
+        /// </summary>
+        public static string DefaultSettingQuerySubCategoryCatalog = "query{subCategory(token: " + '"' + "tokenCode" + '"' + "){id,externalId,name,parentId,parent,distributorId}}";
+        
+        /// <summary>
+        /// Groups Catelog
+        /// </summary>
+        public static string DefaultSettingQueryGroupsCatalog = "query{groups(token: " + '"' + "tokenCode" + '"' + "){id,externalId,name,distributorId}}";
 
         /// <summary>
         /// Brand Category
         /// </summary>
-        public static string DefaultSettingQueryBrandCatalog = "query{brandsCatalog(token: " + '"' + "tokenCode" + '"' + "){name,externalId,distributorId}}";
+        public static string DefaultSettingQueryBrandCatalog = "query{brandsCatalog(token: " + '"' + "tokenCode" + '"' + "){id,name,externalId,distributorId}}";
 
         /// <summary>
         /// Revenew Store Catalog

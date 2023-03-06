@@ -92,6 +92,8 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Controllers
             syncSetting.QueryAuthenticate = model.QueryAuthenticate;
             syncSetting.QueryRevenewCatalog = model.QueryRevenewCatalog;
             syncSetting.QueryCategoryCatalog = model.QueryCategoryCatalog;
+            syncSetting.QuerySubCategoryCatalog = model.QuerySubCategoryCatalog;
+            syncSetting.QueryGroupsCatalog = model.QueryGroupsCatalog;
             syncSetting.QueryBrandCatalog = model.QueryBrandCatalog;
             syncSetting.QueryRevenewStoreCatalog = model.QueryRevenewStoreCatalog;
             syncSetting.QueryRevenewStoreMappingCatalog = model.QueryRevenewStoreMappingCatalog;
@@ -112,6 +114,8 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Controllers
             await _settingService.SaveSettingAsync(syncSetting, settings => settings.QueryAuthenticate, clearCache: false);
             await _settingService.SaveSettingAsync(syncSetting, settings => settings.QueryRevenewCatalog, clearCache: false);
             await _settingService.SaveSettingAsync(syncSetting, settings => settings.QueryCategoryCatalog, clearCache: false);
+            await _settingService.SaveSettingAsync(syncSetting, settings => settings.QuerySubCategoryCatalog, clearCache: false);
+            await _settingService.SaveSettingAsync(syncSetting, settings => settings.QueryGroupsCatalog, clearCache: false);
             await _settingService.SaveSettingAsync(syncSetting, settings => settings.QueryBrandCatalog, clearCache: false);
             await _settingService.SaveSettingAsync(syncSetting, settings => settings.QueryRevenewStoreCatalog, clearCache: false);
             await _settingService.SaveSettingAsync(syncSetting, settings => settings.QueryRevenewStoreMappingCatalog, clearCache: false);

@@ -33,6 +33,22 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Services
         Task<CategorySynModel> GetCategoryCatalog(string token, SettingModel setting);
 
         /// <summary>
+        /// Category Catalog - Sync Catalog
+        /// </summary>
+        /// <param name="login"></param>
+        /// <param name="setting"></param>
+        /// <returns></returns>
+        Task<SubCategorySynModel> GetSubCategoryCatalog(string token, SettingModel setting);
+
+        /// <summary>
+        /// Groups Catalog - Sync Catalog
+        /// </summary>
+        /// <param name="login"></param>
+        /// <param name="setting"></param>
+        /// <returns></returns>
+        Task<GroupsModel> GetGroupsCategoryCatalog(string token, SettingModel setting);
+
+        /// <summary>
         /// Brand Catalog - Sync Catalog
         /// </summary>
         /// <param name="login"></param>

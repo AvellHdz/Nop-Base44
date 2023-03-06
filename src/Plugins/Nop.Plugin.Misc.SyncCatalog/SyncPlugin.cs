@@ -102,6 +102,8 @@ namespace Nop.Plugin.Misc.SyncCatalog
                 [Default.RESOURCE_QUERY_AUTHENTICATE] = "Query - Obtener Autentificador",
                 [Default.RESOURCE_QUERY_REVENEW_CATALOG] = "Query - Catálogo Revenew",
                 [Default.RESOURCE_QUERY_CATEGORY_CATALOG] = "Query - Catálogo de Categorías",
+                [Default.RESOURCE_QUERY_SUB_CATEGORY_CATALOG] = "Query - Catálogo de Sub-Categorías",
+                [Default.RESOURCE_QUERY_GROUPS_CATALOG] = "Query - Catálogo de Familias",
                 [Default.RESOURCE_QUERY_BRAND_CATALOG] = "Query - Catálogo de Marcas",
                 [Default.RESOURCE_QUERY_REVENEW_STORE_CATALOG] = "Query - Catálogo de Ganancia de Tienda",
                 [Default.RESOURCE_QUERY_REVENEW_STORE_MAPPING_CATALOG] = "Query - Mapeo Catálogos",
@@ -118,6 +120,8 @@ namespace Nop.Plugin.Misc.SyncCatalog
             syncSetting.QueryAuthenticate = Default.DefaultSettingQueryAuthenticate;
             syncSetting.QueryRevenewCatalog = Default.DefaultSettingQueryRevenewCatalog;
             syncSetting.QueryCategoryCatalog = Default.DefaultSettingQueryCategoryCatalog;
+            syncSetting.QuerySubCategoryCatalog = Default.DefaultSettingQuerySubCategoryCatalog;
+            syncSetting.QueryGroupsCatalog = Default.DefaultSettingQueryGroupsCatalog;
             syncSetting.QueryBrandCatalog = Default.DefaultSettingQueryBrandCatalog;
             syncSetting.QueryRevenewStoreCatalog = Default.DefaultSettingQueryRevenewStoreCatalog;
             syncSetting.QueryCatalogStore = Default.DefaultSettingQueryCatalogStore;
@@ -131,6 +135,8 @@ namespace Nop.Plugin.Misc.SyncCatalog
             await _settingService.SaveSettingAsync(syncSetting, settings => settings.QueryAuthenticate, clearCache: false);
             await _settingService.SaveSettingAsync(syncSetting, settings => settings.QueryRevenewCatalog, clearCache: false);
             await _settingService.SaveSettingAsync(syncSetting, settings => settings.QueryCategoryCatalog, clearCache: false);
+            await _settingService.SaveSettingAsync(syncSetting, settings => settings.QuerySubCategoryCatalog, clearCache: false);
+            await _settingService.SaveSettingAsync(syncSetting, settings => settings.QueryGroupsCatalog, clearCache: false);
             await _settingService.SaveSettingAsync(syncSetting, settings => settings.QueryBrandCatalog, clearCache: false);
             await _settingService.SaveSettingAsync(syncSetting, settings => settings.QueryRevenewStoreCatalog, clearCache: false);
             await _settingService.SaveSettingAsync(syncSetting, settings => settings.QueryRevenewStoreMappingCatalog, clearCache: false);

@@ -81,6 +81,54 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Services
 
             return new();
         }
+        
+        /// <summary>
+        /// Category Catalog - Sync Catalog
+        /// </summary>
+        /// <param name="login"></param>
+        /// <param name="setting"></param>
+        /// <returns></returns>
+        public async Task<SubCategorySynModel> GetSubCategoryCatalog(string token, SettingModel setting)
+        {
+            #region Data Sync
+
+            if (!string.IsNullOrEmpty(setting.UrlService)
+                && !string.IsNullOrEmpty(setting.QueryAuthenticate))
+            {
+                var queryRequest = setting.QuerySubCategoryCatalog
+                    .Replace(LiteralSync.TOKEN_NAME, token);
+
+                return await Query.ExceuteQueryAsync<SubCategorySynModel>(queryRequest, auth: false, bearer: token) ?? new();
+            }
+
+            #endregion
+
+            return new();
+        }
+        
+        /// <summary>
+        /// Groups Catalog - Sync Catalog
+        /// </summary>
+        /// <param name="login"></param>
+        /// <param name="setting"></param>
+        /// <returns></returns>
+        public async Task<GroupsModel> GetGroupsCategoryCatalog(string token, SettingModel setting)
+        {
+            #region Data Sync
+
+            if (!string.IsNullOrEmpty(setting.UrlService)
+                && !string.IsNullOrEmpty(setting.QueryAuthenticate))
+            {
+                var queryRequest = setting.QueryGroupsCatalog
+                    .Replace(LiteralSync.TOKEN_NAME, token);
+
+                return await Query.ExceuteQueryAsync<GroupsModel>(queryRequest, auth: false, bearer: token) ?? new();
+            }
+
+            #endregion
+
+            return new();
+        }
 
         /// <summary>
         /// Brand Catalog - Sync Catalog

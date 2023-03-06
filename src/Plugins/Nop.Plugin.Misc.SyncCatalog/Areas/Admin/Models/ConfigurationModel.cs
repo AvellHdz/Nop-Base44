@@ -50,6 +50,19 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Models
 
 
         /// <summary>
+        /// Query Category Catalog - Sync Services
+        /// </summary>
+        [NopResourceDisplayName(Default.RESOURCE_QUERY_SUB_CATEGORY_CATALOG)]
+        public string QuerySubCategoryCatalog { get; set; }
+        
+        /// <summary>
+        /// Query Category Catalog - Sync Services
+        /// </summary>
+        [NopResourceDisplayName(Default.RESOURCE_QUERY_GROUPS_CATALOG)]
+        public string QueryGroupsCatalog { get; set; }
+
+
+        /// <summary>
         /// Query Brand Catalog - Sync Services
         /// </summary>
         [NopResourceDisplayName(Default.RESOURCE_QUERY_BRAND_CATALOG)]

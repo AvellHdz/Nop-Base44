@@ -1,15 +1,16 @@
 ﻿namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.MiddlewareSync.Models
 {
-    public class BrandSyncModel
+    public class GroupsModel
     {
-        public Brandscatalog[] brandsCatalog { get; set; }
+        public Group[] groups { get; set; }
     }
 
-    public class Brandscatalog
+    public class Group
     {
         public int id { get; set; }
         public string externalId { get; set; }
         public string name { get; set; }
+        public int distributorId { get; set; }
     }
 
 }

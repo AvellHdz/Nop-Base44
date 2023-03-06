@@ -73,14 +73,33 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Controllers
         {
 
             //load settings for a chosen store scope
-            var storeScope = await _storeContext.GetActiveStoreScopeConfigurationAsync();
-            var syncSetting = await _settingService.LoadSettingAsync<SettingModel>(storeScope);
+            var storeScope = await _storeContext.GetCurrentStoreAsync();
+            var syncSetting = await _settingService.LoadSettingAsync<SettingModel>(storeScope.Id);
+            var generics = await _genericAttributeService.GetAttributesForEntityAsync(storeScope.Id, storeScope.GetType().Name);
 
             #region Authenticate service
 
             var loginModel = new LoginModel() { Email = syncSetting.UserName, Password = syncSetting.Password };
 
             var authenticate = await _syncService.AuthenticateAsync(loginModel, syncSetting);
+
+            #endregion
+
+
+            #region Delete 
+
+            var categoriesAttribute = generics.Where(l => l.Key.Contains(Default.GenericCategoryCatalog)).ToList();
+
+            var subCategoriesAttribute = generics.Where(l => l.Key.Contains(Default.GenericSubCategoryCatalog)).ToList();
+
+            var brandsAttribute = generics.Where(l => l.Key.Contains(Default.GenericBrandCatalog)).ToList();
+
+            var groupsAttribute = generics.Where(l => l.Key.Contains(Default.GenericGroupsCatalog)).ToList();
+
+            _ = _genericAttributeService.DeleteAttributesAsync(categoriesAttribute);
+            _= _genericAttributeService.DeleteAttributesAsync(subCategoriesAttribute);
+            _= _genericAttributeService.DeleteAttributesAsync(brandsAttribute);
+            _= _genericAttributeService.DeleteAttributesAsync(groupsAttribute);
 
             #endregion
 
@@ -109,6 +128,30 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Controllers
 
             #endregion
 
+            #region Sync Category Catalog
+
+            var subCategories = await _syncService.GetSubCategoryCatalog(authenticate.login.accessToken, syncSetting);
+
+            if (!subCategories.subCategory.Any())
+                _notificationService.WarningNotification(LiteralSync.NOT_SUCCESS_SUB_CATEGORY_CATALOG);
+
+            foreach (var subcategory in subCategories.subCategory)
+                await _genericAttributeService.SaveAttributeAsync(_storeContext.GetCurrentStore(), $"{Default.GenericSubCategoryCatalog}{subcategory.Id}", subcategory.name);
+
+            #endregion
+            
+            #region Sync Category Catalog
+
+            var groups = await _syncService.GetGroupsCategoryCatalog(authenticate.login.accessToken, syncSetting);
+
+            if (!groups.groups.Any())
+                _notificationService.WarningNotification(LiteralSync.NOT_SUCCESS_SUB_CATEGORY_CATALOG);
+
+            foreach (var group in groups.groups)
+                await _genericAttributeService.SaveAttributeAsync(_storeContext.GetCurrentStore(), $"{Default.GenericGroupsCatalog}{group.id}", group.name);
+
+            #endregion
+
 
             #region Sync Brand Catalog
 
@@ -118,7 +161,7 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Controllers
                 _notificationService.WarningNotification(LiteralSync.NOT_SUCCESS_BRAND_CATALOG);
 
             foreach (var brand in brands.brandsCatalog)
-                await _genericAttributeService.SaveAttributeAsync(_storeContext.GetCurrentStore(), $"{Default.GenericBrandCatalog}{brand.externalId}", brand.name);
+                await _genericAttributeService.SaveAttributeAsync(_storeContext.GetCurrentStore(), $"{Default.GenericBrandCatalog}{brand.id}", brand.name);
 
             #endregion
         }

@@ -109,6 +109,7 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Factories
             model.QueryAuthenticate = syncCatlogSettings.QueryAuthenticate;
             model.QueryRevenewCatalog = syncCatlogSettings.QueryRevenewCatalog;
             model.QueryCategoryCatalog = syncCatlogSettings.QueryCategoryCatalog;
+            model.QuerySubCategoryCatalog = syncCatlogSettings.QuerySubCategoryCatalog;
             model.QueryBrandCatalog = syncCatlogSettings.QueryBrandCatalog;
             model.QueryRevenewStoreCatalog = syncCatlogSettings.QueryRevenewStoreCatalog;
             model.QueryRevenewStoreMappingCatalog = syncCatlogSettings.QueryRevenewStoreMappingCatalog;
@@ -222,12 +223,18 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Factories
 
                         var categories = generics.Where(l => l.Key.Contains(Default.GenericCategoryCatalog));
 
+                        var subCategories = generics.Where(l => l.Key.Contains(Default.GenericSubCategoryCatalog));
+
                         var brands = generics.Where(l => l.Key.Contains(Default.GenericBrandCatalog));
+
+                        var groups = generics.Where(l => l.Key.Contains(Default.GenericGroupsCatalog));
 
                         var nameType = name switch
                         {
                             "Categoria" => categories.FirstOrDefault(x => x.Key.Replace(Default.GenericCategoryCatalog, string.Empty) == $"{mapping.externalId}")?.Value ?? string.Empty,
+                            "SubCategoria" => subCategories.FirstOrDefault(x => x.Key.Replace(Default.GenericSubCategoryCatalog, string.Empty) == $"{mapping.externalId}")?.Value ?? string.Empty,
                             "Marca" => brands.FirstOrDefault(x => x.Key.Replace(Default.GenericBrandCatalog, string.Empty) == $"{mapping.externalId}")?.Value ?? string.Empty,
+                            "Familia" => groups.FirstOrDefault(x => x.Key.Replace(Default.GenericGroupsCatalog, string.Empty) == $"{mapping.externalId}")?.Value ?? string.Empty,
                             _ => string.Empty,
                         };
 
