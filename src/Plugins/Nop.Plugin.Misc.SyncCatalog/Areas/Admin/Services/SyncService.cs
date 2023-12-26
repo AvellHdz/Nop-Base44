@@ -81,7 +81,7 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Services
 
             return new();
         }
-        
+
         /// <summary>
         /// Category Catalog - Sync Catalog
         /// </summary>
@@ -105,7 +105,7 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Services
 
             return new();
         }
-        
+
         /// <summary>
         /// Groups Catalog - Sync Catalog
         /// </summary>
@@ -227,7 +227,7 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Services
                     var mappings = string.Empty;
                     foreach (var mapping in storeCatalog.RevenewMappingCatalogs)
                         mappings = mappings + "{" + string.Format(detailt, mapping.ExternalID, mapping.MakeUp) + "},";
-                   
+
                     var mutarionAuthRequest = setting.MutationCreateRevenewStoreMappingCatalog
                         .Replace(LiteralSync.REVENEW_STORED_CODE_NAME, $"{0}")
                         .Replace(LiteralSync.STORE_ID_CODE_NAME, $"{storeCatalog.StoreId}")
@@ -247,7 +247,7 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Services
 
             #endregion
         }
-        
+
         /// <summary>
         /// Update mapping with API - Sync Catalog
         /// </summary>
@@ -268,7 +268,7 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Services
                     var mappings = string.Empty;
                     foreach (var mapping in storeCatalog.RevenewMappingCatalogs)
                         mappings = mappings + "{" + string.Format(detailt, mapping.ExternalID, mapping.MakeUp) + "},";
-                   
+
                     var mutarionAuthRequest = setting.MutationUpdateRevenewStoreMappingCatalog
                         .Replace(LiteralSync.REVENEW_STORED_CODE_NAME, $"{storeCatalog.RevenewStored}")
                         .Replace(LiteralSync.STORE_ID_CODE_NAME, $"{storeCatalog.StoreId}")
@@ -286,7 +286,7 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Services
             }
             #endregion
         }
-        
+
         /// <summary>
         /// Update mapping with API - Sync Catalog
         /// </summary>
@@ -307,7 +307,7 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Services
                     var mappings = string.Empty;
                     foreach (var mapping in storeCatalog.RevenewMappingCatalogs)
                         mappings = mappings + "{" + string.Format(detailt, mapping.ExternalID, mapping.MakeUp) + "},";
-                   
+
                     var mutarionAuthRequest = setting.MutationDeleteRevenewStoreMappingCatalog
                         .Replace(LiteralSync.REVENEW_STORED_CODE_NAME, $"{storeCatalog.RevenewStored}")
                         .Replace(LiteralSync.STORE_ID_CODE_NAME, $"{storeCatalog.StoreId}")
@@ -396,7 +396,7 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Services
         /// <param name="login"></param>
         /// <param name="setting"></param>
         /// <returns></returns>
-        public async Task<StoreCatalogSync> GetStoreCatalog(SettingModel setting)
+        public async Task<StoreCatalogSync> GetStoreCatalog(SettingModel setting, string token)
         {
             #region Data Sync
 
@@ -408,7 +408,7 @@ namespace Nop.Plugin.Misc.SyncCatalog.Areas.Admin.Services
                 var queryRequest = setting.QueryCatalogStore
                     .Replace(LiteralSync.STORE_ID_CODE, $"{setting.StoreId}");
 
-                return await Query.ExceuteQueryAsync<StoreCatalogSync>(queryRequest, auth: false) ?? new();
+                return await Query.ExceuteQueryAsync<StoreCatalogSync>(queryRequest, auth: false, bearer: token) ?? new();
             }
 
             #endregion
